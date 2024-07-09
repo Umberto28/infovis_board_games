@@ -101,6 +101,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 event.subject.fy = null;
             }
 
+            
+
             return d3.drag()
                 .on('start', dragstarted)
                 .on('drag', dragged)
