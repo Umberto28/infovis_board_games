@@ -62,11 +62,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }).on('mouseout', () => {
             tooltip.classed('hidden', true);
         }).on('click', (event, d) => {
+            event.stopPropagation();
             const game = data.find(game => game.id === d.id);
             card.classed('hidden', false)
                 .html(`<h3>${game.title}</h3><p>${game.year}</p>`)
                 .style('left', (event.pageX + 10) + 'px')
                 .style('top', (event.pageY + 10) + 'px');
+            console.log('Card shown:', game);
         });
 
         simulation.on('tick', () => {
@@ -104,5 +106,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 .on('drag', dragged)
                 .on('end', dragended);
         }
+    });
+    document.addEventListener('click', () => {
+        card.classed('hidden', true);
+        console.log('Card hidden');
+    });
+
+    // Prevent card from hiding when clicking on the card itself
+    card.on('click', (event) => {
+        event.stopPropagation();
     });
 });
