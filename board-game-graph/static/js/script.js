@@ -1,20 +1,36 @@
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM fully loaded and parsed');
+
     const width = document.getElementById('graph').clientWidth;
     const height = document.getElementById('graph').clientHeight;
 
+    console.log('Graph dimensions:', width, height);
+
     const svg = d3.select('#graph').append('svg')
-        .attr('width', width)
-        .attr('height', height);
+        .attr('width', width + 100)
+        .attr('height', height + 100);
+
+    console.log('SVG created');
 
     const tooltip = d3.select('#tooltip');
     const card = d3.select('#card');
 
     d3.json('/data').then(data => {
-        const nodes = data.map(game => ({ id: game.id, name: game.name }));
+        console.log('Data loaded:', data);
+
+        const nodes = data.map(game => ({ id: game.id, name: game.title }));
+        console.log('Nodes:', nodes);
+
+        const nodeIds = new Set(nodes.map(node => node.id));
+
         const links = [];
         data.forEach(game => {
-            game.peopleAlsoLike.forEach(like => {
-                links.push({ source: game.id, target: like });
+            game.recommendations.fans_liked.forEach(like => {
+                if (nodeIds.has(like)) {
+                    links.push({ source: game.id, target: like });
+                } else {
+                    console.warn(`Node not found: ${like}`);
+                }
             });
         });
 
@@ -48,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }).on('click', (event, d) => {
             const game = data.find(game => game.id === d.id);
             card.classed('hidden', false)
-                .html(`<h3>${game.name}</h3><p>${game.description}</p>`)
+                .html(`<h3>${game.title}</h3><p>${game.year}</p>`)
                 .style('left', (event.pageX + 10) + 'px')
                 .style('top', (event.pageY + 10) + 'px');
         });
