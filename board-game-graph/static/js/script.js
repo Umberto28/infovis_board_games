@@ -101,13 +101,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 event.subject.fy = null;
             }
 
-            
-
             return d3.drag()
                 .on('start', dragstarted)
                 .on('drag', dragged)
                 .on('end', dragended);
         }
+
+        // Apply Local Edge Lens
+        applyLocalEdgeLens(svg, node, link, width, height);
     });
     document.addEventListener('click', () => {
         card.classed('hidden', true);
