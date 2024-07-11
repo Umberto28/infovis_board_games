@@ -3,8 +3,7 @@ import json
 
 app = Flask(__name__)
 
-# Load dataset
-with open('boardgames_100.json') as f: # change this to boardgames_100_clean.json to use the clean dataset
+with open('boardgames_100_clean.json') as f:
     board_games = json.load(f)
 
 @app.route('/')
