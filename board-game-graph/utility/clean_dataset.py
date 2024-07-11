@@ -1,6 +1,6 @@
 import json
 
-with open('boardgames_100.json') as f:
+with open('boardgames_100.json', encoding='utf-8') as f:
     data = json.load(f)
 
 top_100_ids = {game["id"] for game in data}
@@ -11,5 +11,5 @@ for game in data:
         game["recommendations"]["fans_liked"] = [rec for rec in game["recommendations"]["fans_liked"] if rec in top_100_ids]
 
 output_path = 'boardgames_100_clean.json'
-with open(output_path, 'w') as f:
-    json.dump(data, f, indent=2)
+with open(output_path, 'w', encoding='utf-8') as f:
+    json.dump(data, f, ensure_ascii=False, indent=2)
