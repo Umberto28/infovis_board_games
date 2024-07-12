@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Board Game Graph</title>
+    <title>Board Games View</title>
     <link rel="stylesheet" href="static/css/style.css">
 </head>
 <body>
-    <h1>Board Games Visualization</h1>
+    <h1>Top-100 Board Games Visualization</h1>
     <div>
         <label for="year">Select Year:</label>
         <select id="year">
@@ -15,21 +15,21 @@
         </select>
         <label for="minplayers">Min Players:</label>
         <select id="minplayers">
-            <option value="">All</option> <!-- Might be unneccessary as All option corresponds to minplayers >= 1 option -->
+            <option value="">All</option> <!-- might be unneccessary as All option corresponds to minplayers >= 1 option -->
         </select>
-        <label for="maxplayers">Max Players:</label>
+        <label for="maxplayers">Max Players:</label> <!-- All option corresponds to maxplayer <= 8 option -->
         <select id="maxplayers">
             <option value="">All</option>
         </select>
-        <label for="minplaytime">Min Playtime:</label>
+        <label for="minplaytime">Min Playtime:</label> <!-- All option corresponds to minplaytime >= 5 option -->
         <select id="minplaytime">
             <option value="">All</option>
         </select>
-        <label for="maxplaytime">Max Playtime:</label>
+        <label for="maxplaytime">Max Playtime:</label> <!-- All option corresponds to maxplaytime <= 1000 option -->
         <select id="maxplaytime">
             <option value="">All</option>
         </select>
-        <label for="minage">Min Player Age:</label>
+        <label for="minage">Min Player Age:</label> <!-- All option corresponds to minplayerage >= 8 option -->
         <select id="minage">
             <option value="">All</option>
         </select>

@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 values = [...new Set(data.map(game => game[key]))];
             }
             // using no param .sort() with numbers, an example output is: [10, 100, 20, 250, 30, 50, 650, ...]
-            // this is why we need a custom comparator for numbers (int)
+            // this is why we need a custom comparator for numbers (int in these cases)
             values.sort((a, b) => a - b);
             const select = document.getElementById(id);
             values.forEach(value => {
@@ -181,21 +181,19 @@ document.addEventListener('DOMContentLoaded', function() {
             categories, mechanics, designer).then(data => updateGraph(data));
     };
 
-    // previously written like this
+    // the following was previously written like this
     // document.getElementById('year').addEventListener('change', filterAndUpdateGraph);
     // document.getElementById('minplayers').addEventListener('change', filterAndUpdateGraph);
     // document.getElementById('maxplayers').addEventListener('change', filterAndUpdateGraph);
     // document.getElementById('minplaytime').addEventListener('change', filterAndUpdateGraph);
     // document.getElementById('maxplaytime').addEventListener('change', filterAndUpdateGraph);
     // document.getElementById('minage').addEventListener('change', filterAndUpdateGraph);
-    //
     // fillOptions('year', 'year');
     // fillOptions('minplayers', 'minplayers');
     // fillOptions('maxplayers', 'maxplayers');
     // fillOptions('minplaytime', 'minplaytime');
     // fillOptions('maxplaytime', 'maxplaytime');
     // fillOptions('minage', 'minage');
-
     ['year', 'minplayers', 'maxplayers', 'minplaytime', 'maxplaytime', 'minage',
         'categories', 'mechanics', 'designer'].forEach(classification => {
         document.getElementById(classification).addEventListener('change', filterAndUpdateGraph);

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top-100 Board Games Visualization</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center">Board Games Graph</h1>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="year">Select Year:</label>
+                <select id="year" class="form-control">
+                    <option value="">All</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="categories">Categories:</label>
+                <select id="categories" class="form-control">
+                    <option value="">All</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="minplayers">Min Players:</label>
+                <select id="minplayers" class="form-control">
+                    <option value="">All</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="mechanics">Mechanics:</label>
+                <select id="mechanics" class="form-control">
+                    <option value="">All</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="maxplayers">Max Players:</label>
+                <select id="maxplayers" class="form-control">
+                    <option value="">All</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="designer">Designer:</label>
+                <select id="designer" class="form-control">
+                    <option value="">All</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="minplaytime">Min Playtime:</label>
+                <select id="minplaytime" class="form-control">
+                    <option value="">All</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="minage">Min Player Age:</label>
+                <select id="minage" class="form-control">
+                    <option value="">All</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="maxplaytime">Max Playtime:</label>
+                <select id="maxplaytime" class="form-control">
+                    <option value="">All</option>
+                </select>
+            </div>
+        </div>
+        <div id="graph" class="mt-4"></div>
+        <div id="tooltip" class="hidden"></div>
+        <div id="card" class="hidden"></div>
+    </div>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="static/js/lens.js"></script>
+    <script src="static/js/script.js"></script>
+</body>
+</html>
