@@ -40,13 +40,13 @@ def get_boardgames():
         filtered_boardgames = [game for game in filtered_boardgames if game['maxplaytime'] <= maxplaytime] # is == better?
     if minage:
         filtered_boardgames = [game for game in filtered_boardgames if game['minage'] >= minage] # is == better?
-    if category:
+    if category: # implement a checkbox instead of a dropdown to make multiple categories filtering possible
         filtered_boardgames = [game for game in filtered_boardgames
                                if any(categories['name'] == category for categories in game['types']['categories'])]
-    if mechanic:
+    if mechanic: # implement a checkbox instead of a dropdown to make multiple mechanics filtering possible
         filtered_boardgames = [game for game in filtered_boardgames
                                if any(mechanics['name'] == mechanic for mechanics in game['types']['mechanics'])]
-    if designer:
+    if designer: # implement a checkbox instead of a dropdown to make multiple designers filtering possible
         filtered_boardgames = [game for game in filtered_boardgames
                                if any(designer_of_game['name'] == designer for designer_of_game in game['credit']['designer'])]
     
