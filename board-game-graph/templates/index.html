@@ -7,6 +7,31 @@
     <link rel="stylesheet" href="static/css/style.css">
 </head>
 <body>
+    <h1>Board Games Visualization</h1>
+    <label for="year">Select Year:</label>
+    <select id="year">
+        <option value="">All</option>
+    </select>
+    <label for="minplayers">Min Players:</label>
+    <select id="minplayers">
+        <option value="">All</option> <!-- Might be unneccessary as All option corresponds to minplayers >= 1 option -->
+    </select>
+    <label for="maxplayers">Max Players:</label>
+    <select id="maxplayers">
+        <option value="">All</option>
+    </select>
+    <label for="minplaytime">Min Playtime:</label>
+    <select id="minplaytime">
+        <option value="">All</option>
+    </select>
+    <label for="maxplaytime">Max Playtime:</label>
+    <select id="maxplaytime">
+        <option value="">All</option>
+    </select>
+    <label for="minage">Min Player Age:</label>
+    <select id="minage">
+        <option value="">All</option>
+    </select>
     <div id="graph"></div>
     <div id="tooltip" class="hidden"></div>
     <div id="card" class="hidden"></div>
