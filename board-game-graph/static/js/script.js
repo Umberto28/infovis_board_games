@@ -15,30 +15,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const tooltip = d3.select('#tooltip');
     const card = d3.select('#card');
 
-    const fetchData = (year, minplayers, maxplayers, minplaytime, maxplaytime, minage) => {
+    const fetchData = (year, minplayers, maxplayers, minplaytime, maxplaytime, minage, categories, mechanics, designer) => {
         let url = '/api/boardgames';
         let params = [];
-        if (year) {
-            params.push(`year=${year}`);
-        }
-        if (minplayers) {
-            params.push(`minplayers=${minplayers}`);
-        }
-        if (maxplayers) {
-            params.push(`maxplayers=${maxplayers}`);
-        }
-        if (minplaytime) {
-            params.push(`minplaytime=${minplaytime}`);
-        }
-        if (maxplaytime) {
-            params.push(`maxplaytime=${maxplaytime}`);
-        }
-        if (minage) {
-            params.push(`minage=${minage}`);
-        }
-        if (params.length > 0) {
-            url += `?${params.join('&')}`;
-        }
+        if (year) params.push(`year=${year}`);
+        if (minplayers) params.push(`minplayers=${minplayers}`);
+        if (maxplayers) params.push(`maxplayers=${maxplayers}`);
+        if (minplaytime) params.push(`minplaytime=${minplaytime}`);
+        if (maxplaytime) params.push(`maxplaytime=${maxplaytime}`);
+        if (minage) params.push(`minage=${minage}`);
+        if (categories) params.push(`categories=${categories}`);
+        if (mechanics) params.push(`mechanics=${mechanics}`);
+        if (designer) params.push(`designer=${designer}`);
+        if (params.length > 0) url += `?${params.join('&')}`;
         return fetch(url)
             .then(response => response.json());
     };
@@ -152,7 +141,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const fillOptions = (id, key) => {
         fetchData().then(data => {
-            const values = [...new Set(data.map(game => game[key]))];
+            let values;
+            if (key === 'categories' || key === 'mechanics') {
+                values = [...new Set(data.flatMap(game => game['types'][key].map(item => item.name)))];
+                values.sort();
+            }
+            else if (key === 'designer') {
+                values = [...new Set(data.flatMap(game => game['credit'][key].map(item => item.name)))];
+                values.sort();
+            }
+            else {
+                values = [...new Set(data.map(game => game[key]))];
+            }
+            // using no param .sort() with numbers, an example output is: [10, 100, 20, 250, 30, 50, 650, ...]
+            // this is why we need a custom comparator for numbers (int)
             values.sort((a, b) => a - b);
             const select = document.getElementById(id);
             values.forEach(value => {
@@ -171,8 +173,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const minplaytime = document.getElementById('minplaytime').value;
         const maxplaytime = document.getElementById('maxplaytime').value;
         const minage = document.getElementById('minage').value;
+        const categories = document.getElementById('categories').value;
+        const mechanics = document.getElementById('mechanics').value;
+        const designer = document.getElementById('designer').value;
 
-        fetchData(year, minplayers, maxplayers, minplaytime, maxplaytime, minage).then(data => updateGraph(data));
+        fetchData(year, minplayers, maxplayers, minplaytime, maxplaytime, minage,
+            categories, mechanics, designer).then(data => updateGraph(data));
     };
 
     // previously written like this
@@ -190,7 +196,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // fillOptions('maxplaytime', 'maxplaytime');
     // fillOptions('minage', 'minage');
 
-    ['year', 'minplayers', 'maxplayers', 'minplaytime', 'maxplaytime', 'minage'].forEach(classification => {
+    ['year', 'minplayers', 'maxplayers', 'minplaytime', 'maxplaytime', 'minage',
+        'categories', 'mechanics', 'designer'].forEach(classification => {
         document.getElementById(classification).addEventListener('change', filterAndUpdateGraph);
         fillOptions(classification, classification);
     });

@@ -10,7 +10,7 @@ with open('boardgames_100_clean.json') as f:
 def index():
     return render_template('index.html')
 
-@app.route('/data')
+@app.route('/data') # accessible only by adding /data in the URL, implement link?
 def data():
     return jsonify(board_games)
 
@@ -22,6 +22,9 @@ def get_boardgames():
     minplaytime = request.args.get('minplaytime', type=int)
     maxplaytime = request.args.get('maxplaytime', type=int)
     minage = request.args.get('minage', type=int)
+    category = request.args.get('categories')
+    mechanic = request.args.get('mechanics')
+    designer = request.args.get('designer')
 
     filtered_boardgames = board_games
 
@@ -37,7 +40,16 @@ def get_boardgames():
         filtered_boardgames = [game for game in filtered_boardgames if game['maxplaytime'] <= maxplaytime] # is == better?
     if minage:
         filtered_boardgames = [game for game in filtered_boardgames if game['minage'] >= minage] # is == better?
-
+    if category:
+        filtered_boardgames = [game for game in filtered_boardgames
+                               if any(categories['name'] == category for categories in game['types']['categories'])]
+    if mechanic:
+        filtered_boardgames = [game for game in filtered_boardgames
+                               if any(mechanics['name'] == mechanic for mechanics in game['types']['mechanics'])]
+    if designer:
+        filtered_boardgames = [game for game in filtered_boardgames
+                               if any(designer_of_game['name'] == designer for designer_of_game in game['credit']['designer'])]
+    
     return jsonify(filtered_boardgames)
 
 if __name__ == '__main__':
