@@ -10,12 +10,12 @@ function applyLocalEdgeLens(svg, nodeSelection, linkSelection, width, height) {
         // Enable panning only if zoom level is greater than 1
         if (transform.k > 1) {
             svg.selectAll('g').attr("transform", transform);
-            nodeSelection.attr("r", 5 / transform.k);
+            nodeSelection.attr("r", 7 / transform.k);
             updateEdgesVisibility(transform);
             showNodePopups(transform);
         } else {
             svg.selectAll('g').attr("transform", null);
-            nodeSelection.attr("r", 5);
+            nodeSelection.attr("r", 7);
             updateEdgesVisibility(transform);
             showNodePopups(transform);
         }

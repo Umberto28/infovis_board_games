@@ -35,23 +35,25 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         const simulation = d3.forceSimulation(nodes)
-            .force('link', d3.forceLink(links).id(d => d.id))
-            .force('charge', d3.forceManyBody().strength(-200))
+            .force('link', d3.forceLink(links).id(d => d.id).distance(10))
+            .force('charge', d3.forceManyBody().strength(-150))
             .force('center', d3.forceCenter(width / 2, height / 2));
 
         const link = svg.append('g')
             .selectAll('line')
             .data(links)
-            .enter().append('line')
-            .attr('stroke', '#999')
-            .attr('stroke-opacity', 0.6);
+            .enter()
+            .append('line')
+                .attr('stroke', '#999')
+                .attr('stroke-opacity', 0.6);
 
         const node = svg.append('g')
             .selectAll('circle')
             .data(nodes)
-            .enter().append('circle')
-            .attr('r', 5)
-            .attr('fill', '#69b3a2')
+            .enter()
+            .append('circle')
+                .attr('r', 7)
+                .style('fill', '#69b3a2')
             .call(drag(simulation));
 
         node.on('mouseover', (event, d) => {
