@@ -3,12 +3,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const width = document.getElementById('graph').clientWidth;
     const height = document.getElementById('graph').clientHeight;
+    
+    // const width = window.innerWidth;
+    // const height = window.innerHeight;
 
     console.log('Graph dimensions:', width, height);
 
     const svg = d3.select('#graph').append('svg')
-        .attr('width', width + 100)
-        .attr('height', height + 100);
+        .attr('width', width)
+        .attr('height', height);
 
     console.log('SVG created');
 
@@ -19,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Data loaded:', data);
 
         const nodes = data.map(game => ({ id: game.id, name: game.title }));
-        console.log('Nodes:', nodes);
+        console.log('Nodes:', nodes.length);
 
         const nodeIds = new Set(nodes.map(node => node.id));
 
@@ -33,19 +36,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         });
+        console.log('Links:', links.length);
+
+        const datasetByYear = data.map(game => {
+            return {
+              id: game.id,
+              title: game.title,
+              year: game.year
+            };
+          });
+          console.log(datasetByYear);
 
         const simulation = d3.forceSimulation(nodes)
-            .force('link', d3.forceLink(links).id(d => d.id).distance(10))
-            .force('charge', d3.forceManyBody().strength(-150))
-            .force('center', d3.forceCenter(width / 2, height / 2));
+            .force('link', d3.forceLink(links).id(d => d.id).distance(60).strength(0.05))
+            .force('charge', d3.forceManyBody().strength(-200))
+            .force('center', d3.forceCenter(width / 2, height / 2))
+            .force('collide', d3.forceCollide().radius(23).strength(0.6));
 
         const link = svg.append('g')
             .selectAll('line')
             .data(links)
             .enter()
             .append('line')
-                .attr('stroke', '#999')
-                .attr('stroke-opacity', 0.6);
+                .attr('stroke', '#000')
+                .attr('stroke-opacity', 0.16);
 
         const node = svg.append('g')
             .selectAll('circle')
@@ -53,7 +67,8 @@ document.addEventListener('DOMContentLoaded', function() {
             .enter()
             .append('circle')
                 .attr('r', 7)
-                .style('fill', '#69b3a2')
+                .attr('fill', '#CC0000')
+                .attr('stroke', '#000')
             .call(drag(simulation));
 
         node.on('mouseover', (event, d) => {
@@ -74,6 +89,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         simulation.on('tick', () => {
+            nodes.forEach(d => {
+                d.x = Math.max(10, Math.min(width - 10, d.x));
+                d.y = Math.max(10, Math.min(height - 10, d.y));
+            });
+
             link
                 .attr('x1', d => d.source.x)
                 .attr('y1', d => d.source.y)
@@ -112,6 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Apply Local Edge Lens
         applyLocalEdgeLens(svg, node, link, width, height);
     });
+    
     document.addEventListener('click', () => {
         card.classed('hidden', true);
         console.log('Card hidden');
