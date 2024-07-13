@@ -3,7 +3,7 @@ import json
 
 app = Flask(__name__)
 
-with open('boardgames_100_clean.json', encoding='utf-8') as f:
+with open('dataset/boardgames_100_clean.json', encoding='utf-8') as f: # change this to boardgames_100_clean.json to use the clean dataset
     board_games = json.load(f)
 
 @app.route('/')
@@ -51,6 +51,10 @@ def get_boardgames():
                                if any(designer_of_game['name'] == designer for designer_of_game in game['credit']['designer'])]
     
     return jsonify(filtered_boardgames)
+
+# @app.route('/data/year')
+# def data_year():
+#     return jsonify(board_games)
 
 if __name__ == '__main__':
     app.run(debug=True)
