@@ -18,7 +18,26 @@ document.addEventListener('DOMContentLoaded', function() {
     const tooltip = d3.select('#tooltip');
     const card = d3.select('#card');
 
-    d3.json('/data').then(data => {
+    const fetchData = (year, minplayers, maxplayers, minplaytime, maxplaytime, minage, categories, mechanics, designer) => {
+        let url = '/api/boardgames';
+        let params = [];
+        if (year) params.push(`year=${year}`);
+        if (minplayers) params.push(`minplayers=${minplayers}`);
+        if (maxplayers) params.push(`maxplayers=${maxplayers}`);
+        if (minplaytime) params.push(`minplaytime=${minplaytime}`);
+        if (maxplaytime) params.push(`maxplaytime=${maxplaytime}`);
+        if (minage) params.push(`minage=${minage}`);
+        if (categories) params.push(`categories=${categories}`);
+        if (mechanics) params.push(`mechanics=${mechanics}`);
+        if (designer) params.push(`designer=${designer}`);
+        if (params.length > 0) url += `?${params.join('&')}`;
+        return fetch(url)
+            .then(response => response.json());
+    };
+
+    const updateGraph = (data) => {
+        svg.selectAll("*").remove();
+
         console.log('Data loaded:', data);
 
         const nodes = data.map(game => ({ id: game.id, name: game.title }));
@@ -32,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (nodeIds.has(like)) {
                     links.push({ source: game.id, target: like });
                 } else {
-                    console.warn(`Node not found: ${like}`);
+                    console.warn(`Node not found: ${like}`); // not needed anymore if using clean dataset
                 }
             });
         });
@@ -131,8 +150,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Apply Local Edge Lens
         applyLocalEdgeLens(svg, node, link, width, height);
-    });
-    
+    };
+  
     document.addEventListener('click', () => {
         card.classed('hidden', true);
         console.log('Card hidden');
@@ -142,4 +161,67 @@ document.addEventListener('DOMContentLoaded', function() {
     card.on('click', (event) => {
         event.stopPropagation();
     });
+
+    const fillOptions = (id, key) => {
+        fetchData().then(data => {
+            let values;
+            if (key === 'categories' || key === 'mechanics') {
+                values = [...new Set(data.flatMap(game => game['types'][key].map(item => item.name)))];
+                values.sort();
+            }
+            else if (key === 'designer') {
+                values = [...new Set(data.flatMap(game => game['credit'][key].map(item => item.name)))];
+                values.sort();
+            }
+            else {
+                values = [...new Set(data.map(game => game[key]))];
+            }
+            // using no param .sort() with numbers, an example output is: [10, 100, 20, 250, 30, 50, 650, ...]
+            // this is why we need a custom comparator for numbers (int in these cases)
+            values.sort((a, b) => a - b);
+            const select = document.getElementById(id);
+            values.forEach(value => {
+                const option = document.createElement('option');
+                option.value = value;
+                option.text = value;
+                select.add(option);
+            });
+        });
+    };
+
+    const filterAndUpdateGraph = () => {
+        const year = document.getElementById('year').value;
+        const minplayers = document.getElementById('minplayers').value;
+        const maxplayers = document.getElementById('maxplayers').value;
+        const minplaytime = document.getElementById('minplaytime').value;
+        const maxplaytime = document.getElementById('maxplaytime').value;
+        const minage = document.getElementById('minage').value;
+        const categories = document.getElementById('categories').value;
+        const mechanics = document.getElementById('mechanics').value;
+        const designer = document.getElementById('designer').value;
+
+        fetchData(year, minplayers, maxplayers, minplaytime, maxplaytime, minage,
+            categories, mechanics, designer).then(data => updateGraph(data));
+    };
+
+    // the following was previously written like this
+    // document.getElementById('year').addEventListener('change', filterAndUpdateGraph);
+    // document.getElementById('minplayers').addEventListener('change', filterAndUpdateGraph);
+    // document.getElementById('maxplayers').addEventListener('change', filterAndUpdateGraph);
+    // document.getElementById('minplaytime').addEventListener('change', filterAndUpdateGraph);
+    // document.getElementById('maxplaytime').addEventListener('change', filterAndUpdateGraph);
+    // document.getElementById('minage').addEventListener('change', filterAndUpdateGraph);
+    // fillOptions('year', 'year');
+    // fillOptions('minplayers', 'minplayers');
+    // fillOptions('maxplayers', 'maxplayers');
+    // fillOptions('minplaytime', 'minplaytime');
+    // fillOptions('maxplaytime', 'maxplaytime');
+    // fillOptions('minage', 'minage');
+    ['year', 'minplayers', 'maxplayers', 'minplaytime', 'maxplaytime', 'minage',
+        'categories', 'mechanics', 'designer'].forEach(classification => {
+        document.getElementById(classification).addEventListener('change', filterAndUpdateGraph);
+        fillOptions(classification, classification);
+    });
+
+    fetchData().then(data => updateGraph(data));
 });
