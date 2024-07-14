@@ -9,41 +9,67 @@
 <body>
     <h1>Top-100 Board Games Visualization</h1>
     <div>
-        <label for="year">Year:</label>
-        <select id="year" multiple>
-        </select>
-        <label for="minplayers">Min Players:</label>
-        <select id="minplayers" multiple>
-        </select>
-        <label for="maxplayers">Max Players:</label>
-        <select id="maxplayers" multiple>
-        </select>
-        <label for="minplaytime">Min Playtime:</label>
-        <select id="minplaytime" multiple>
-        </select>
-        <label for="maxplaytime">Max Playtime:</label>
-        <select id="maxplaytime" multiple>
-        </select>
-        <label for="minage">Min Player Age:</label>
-        <select id="minage" multiple>
-        </select>
-    </div>
-    <div>
-        <label for="categories">Categories:</label>
-        <select id="categories" multiple>
-        </select>
-        <label for="mechanics">Mechanics:</label>
-        <select id="mechanics" multiple>
-        </select>
-        <label for="designer">Designer:</label>
-        <select id="designer" multiple>
-        </select>
+        <div class="dropdown">
+            <button class="dropbtn">Year</button>
+            <div id="year-dropdown" class="dropdown-content">
+                <!-- Options will be populated here -->
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Min Players</button>
+            <div id="minplayers-dropdown" class="dropdown-content">
+                <!-- Options will be populated here -->
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Max Players</button>
+            <div id="maxplayers-dropdown" class="dropdown-content">
+                <!-- Options will be populated here -->
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Min Playtime</button>
+            <div id="minplaytime-dropdown" class="dropdown-content">
+                <!-- Options will be populated here -->
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Max Playtime</button>
+            <div id="maxplaytime-dropdown" class="dropdown-content">
+                <!-- Options will be populated here -->
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Min Age</button>
+            <div id="minage-dropdown" class="dropdown-content">
+                <!-- Options will be populated here -->
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Categories</button>
+            <div id="categories-dropdown" class="dropdown-content">
+                <!-- Options will be populated here -->
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Mechanics</button>
+            <div id="mechanics-dropdown" class="dropdown-content">
+                <!-- Options will be populated here -->
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Designers</button>
+            <div id="designer-dropdown" class="dropdown-content">
+                <!-- Options will be populated here -->
+            </div>
+        </div>
     </div>
     <div id="graph"></div>
     <div id="tooltip" class="hidden"></div>
     <div id="card" class="hidden"></div>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="static/js/lens.js"></script>
+    <script src="static/js/dropdown.js"></script>
     <script src="static/js/script.js"></script>
     <!-- <script src="{{ url_for('static', filename='js/lens.js') }}"></script> -->
     <!-- <script src="{{ url_for('static', filename='js/hier_vis.js') }}"></script> -->

@@ -29,3 +29,34 @@ body {
 #card.hidden {
     display: none;
 }
+
+/* Add styles for the dropdown with checkboxes */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    max-height: 200px; /* Set max-height */
+    overflow-y: auto;  /* Add scroll if needed */
+}
+.dropdown-content label {
+    display: block;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+.dropdown-content label:hover {
+    background-color: #ddd;
+}
+
+.show {
+    display: block;
+}
+.hidden {
+    display: none;
+}

@@ -18,29 +18,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const tooltip = d3.select('#tooltip');
     const card = d3.select('#card');
 
-    const getSelectedValues = (selectElement) => {
-        return Array.from(selectElement.selectedOptions).map(option => option.value).filter(value => value);
-    };
-
-    const fetchData = (year, minplayers, maxplayers, minplaytime, maxplaytime, minage, categories, mechanics, designer) => {
-        let url = '/api/boardgames';
-        let params = new URLSearchParams();
-        // At first I used ',' for joining but some [mechanics] have it inside their names
-        // I changed everyone's ',' to '|' to make it universal
-        if (year) params.append('year', year.join('|'));
-        if (minplayers) params.append('minplayers', minplayers.join('|'));
-        if (maxplayers) params.append('maxplayers', maxplayers.join('|'));
-        if (minplaytime) params.append('minplaytime', minplaytime.join('|'));
-        if (maxplaytime) params.append('maxplaytime', maxplaytime.join('|'));
-        if (minage) params.append('minage', minage.join('|'));
-        if (categories) params.append('categories', categories.join('|'));
-        if (mechanics) params.append('mechanics', mechanics.join('|'));
-        if (designer) params.append('designer', designer.join('|'));
-        url += `?${params.toString()}`;
-        return fetch(url)
-            .then(response => response.json());
-    };
-
     const updateGraph = (data) => {
         svg.selectAll("*").remove();
 
@@ -63,14 +40,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         console.log('Links:', links.length);
 
+        // Not needed?
         const datasetByYear = data.map(game => {
             return {
-              id: game.id,
-              title: game.title,
-              year: game.year
+                id: game.id,
+                title: game.title,
+                year: game.year
             };
-          });
-          console.log(datasetByYear);
+        });
+        console.log(datasetByYear);
 
         const simulation = d3.forceSimulation(nodes)
             .force('link', d3.forceLink(links).id(d => d.id).distance(60).strength(0.05))
@@ -157,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Apply Local Edge Lens
         applyLocalEdgeLens(svg, node, link, width, height);
     };
-  
+
     document.addEventListener('click', () => {
         card.classed('hidden', true);
         console.log('Card hidden');
@@ -168,7 +146,31 @@ document.addEventListener('DOMContentLoaded', function() {
         event.stopPropagation();
     });
 
-    const fillOptions = (id, key) => {
+    /////////////////////////////////////////////////////////////
+    //             FILTERING AND DROPDOWN CREATION             //
+    /////////////////////////////////////////////////////////////
+
+    const fetchData = (year, minplayers, maxplayers, minplaytime, maxplaytime, minage, categories, mechanics, designer) => {
+        let url = '/api/boardgames';
+        let params = new URLSearchParams();
+        // At first I used ',' for joining but some [mechanics] have it inside their names
+        // I changed everyone's ',' to '|' to make it universal
+        if (year) params.append('year', year.join('|'));
+        if (minplayers) params.append('minplayers', minplayers.join('|'));
+        if (maxplayers) params.append('maxplayers', maxplayers.join('|'));
+        if (minplaytime) params.append('minplaytime', minplaytime.join('|'));
+        if (maxplaytime) params.append('maxplaytime', maxplaytime.join('|'));
+        if (minage) params.append('minage', minage.join('|'));
+        if (categories) params.append('categories', categories.join('|'));
+        if (mechanics) params.append('mechanics', mechanics.join('|'));
+        if (designer) params.append('designer', designer.join('|'));
+        url += `?${params.toString()}`;
+        return fetch(url)
+            .then(response => response.json());
+    };
+
+    const createCheckboxDropdown = (id, key) => {
+        const dropdown = document.getElementById(id + '-dropdown');
         fetchData().then(data => {
             let values;
             if (key === 'categories' || key === 'mechanics') {
@@ -185,49 +187,45 @@ document.addEventListener('DOMContentLoaded', function() {
             // using no param .sort() with numbers, an example output is: [10, 100, 20, 250, 30, 50, 650, ...]
             // this is why we need a custom comparator for numbers (int in these cases)
             values.sort((a, b) => a - b);
-            const select = document.getElementById(id);
+            const container = document.getElementById(id + '-dropdown');
+            container.innerHTML = ''; // Clear existing options
             values.forEach(value => {
-                const option = document.createElement('option');
-                option.value = value;
-                option.text = value;
-                select.add(option);
+                const label = document.createElement('label');
+                label.innerHTML = `<input type="checkbox" value="${value}"> ${value}`;
+                container.appendChild(label);
+            });
+
+            // Add event listeners to checkboxes
+            container.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', filterAndUpdateGraph);
             });
         });
     };
 
+    const getSelectedValues = (id) => {
+        return Array.from(document.querySelectorAll(`#${id}-dropdown input:checked`)).map(input => input.value);
+    };
+
     const filterAndUpdateGraph = () => {
-        const year = getSelectedValues(document.getElementById('year'));
-        const minplayers = getSelectedValues(document.getElementById('minplayers'));
-        const maxplayers = getSelectedValues(document.getElementById('maxplayers'));
-        const minplaytime = getSelectedValues(document.getElementById('minplaytime'));
-        const maxplaytime = getSelectedValues(document.getElementById('maxplaytime'));
-        const minage = getSelectedValues(document.getElementById('minage'));
-        const categories = getSelectedValues(document.getElementById('categories'));
-        const mechanics = getSelectedValues(document.getElementById('mechanics'));
-        const designer = getSelectedValues(document.getElementById('designer'));
+        const year = getSelectedValues('year');
+        const minplayers = getSelectedValues('minplayers');
+        const maxplayers = getSelectedValues('maxplayers');
+        const minplaytime = getSelectedValues('minplaytime');
+        const maxplaytime = getSelectedValues('maxplaytime');
+        const minage = getSelectedValues('minage');
+        const categories = getSelectedValues('categories');
+        const mechanics = getSelectedValues('mechanics');
+        const designer = getSelectedValues('designer');
 
         fetchData(year, minplayers, maxplayers, minplaytime, maxplaytime, minage,
             categories, mechanics, designer).then(data => updateGraph(data));
     };
 
-    // the following was previously written like this
-    // document.getElementById('year').addEventListener('change', filterAndUpdateGraph);
-    // document.getElementById('minplayers').addEventListener('change', filterAndUpdateGraph);
-    // document.getElementById('maxplayers').addEventListener('change', filterAndUpdateGraph);
-    // document.getElementById('minplaytime').addEventListener('change', filterAndUpdateGraph);
-    // document.getElementById('maxplaytime').addEventListener('change', filterAndUpdateGraph);
-    // document.getElementById('minage').addEventListener('change', filterAndUpdateGraph);
-    // fillOptions('year', 'year');
-    // fillOptions('minplayers', 'minplayers');
-    // fillOptions('maxplayers', 'maxplayers');
-    // fillOptions('minplaytime', 'minplaytime');
-    // fillOptions('maxplaytime', 'maxplaytime');
-    // fillOptions('minage', 'minage');
-    ['year', 'minplayers', 'maxplayers', 'minplaytime', 'maxplaytime', 'minage',
-        'categories', 'mechanics', 'designer'].forEach(classification => {
-        document.getElementById(classification).addEventListener('change', filterAndUpdateGraph);
-        fillOptions(classification, classification);
+    // initialize dropdowns (filling options)
+    ['year', 'minplayers', 'maxplayers', 'minplaytime', 'maxplaytime', 'minage', 'categories', 'mechanics', 'designer'].forEach(classification => {
+        createCheckboxDropdown(classification, classification);
     });
 
+    // initialize graph
     fetchData().then(data => updateGraph(data));
 });
