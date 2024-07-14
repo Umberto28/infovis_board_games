@@ -14,50 +14,69 @@
         </a>
     </div>
     <div>
-        <label for="year">Year:</label>
-        <select id="year">
-            <option value="">All</option>
-        </select>
-        <label for="minplayers">Min Players:</label>
-        <select id="minplayers">
-            <option value="">All</option> <!-- might be unneccessary as All option corresponds to minplayers >= 1 option -->
-        </select>
-        <label for="maxplayers">Max Players:</label> <!-- All option corresponds to maxplayer <= 8 option -->
-        <select id="maxplayers">
-            <option value="">All</option>
-        </select>
-        <label for="minplaytime">Min Playtime:</label> <!-- All option corresponds to minplaytime >= 5 option -->
-        <select id="minplaytime">
-            <option value="">All</option>
-        </select>
-        <label for="maxplaytime">Max Playtime:</label> <!-- All option corresponds to maxplaytime <= 1000 option -->
-        <select id="maxplaytime">
-            <option value="">All</option>
-        </select>
-        <label for="minage">Min Player Age:</label> <!-- All option corresponds to minplayerage >= 8 option -->
-        <select id="minage">
-            <option value="">All</option>
-        </select>
-    </div>
-    <div>
-        <label for="categories">Categories:</label>
-        <select id="categories">
-            <option value="">All</option>
-        </select>
-        <label for="mechanics">Mechanics:</label>
-        <select id="mechanics">
-            <option value="">All</option>
-        </select>
-        <label for="designer">Designer:</label>
-        <select id="designer">
-            <option value="">All</option>
-        </select>
+        <div class="dropdown">
+            <button class="dropbtn">Year</button>
+            <div id="year-dropdown" class="dropdown-content">
+                <!-- Options will be populated here -->
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Min Players</button>
+            <div id="minplayers-dropdown" class="dropdown-content">
+                <!-- Options will be populated here -->
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Max Players</button>
+            <div id="maxplayers-dropdown" class="dropdown-content">
+                <!-- Options will be populated here -->
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Min Playtime</button>
+            <div id="minplaytime-dropdown" class="dropdown-content">
+                <!-- Options will be populated here -->
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Max Playtime</button>
+            <div id="maxplaytime-dropdown" class="dropdown-content">
+                <!-- Options will be populated here -->
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Min Age</button>
+            <div id="minage-dropdown" class="dropdown-content">
+                <!-- Options will be populated here -->
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Categories</button>
+            <div id="categories-dropdown" class="dropdown-content">
+                <!-- Options will be populated here -->
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Mechanics</button>
+            <div id="mechanics-dropdown" class="dropdown-content">
+                <!-- Options will be populated here -->
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Designers</button>
+            <div id="designer-dropdown" class="dropdown-content">
+                <!-- Options will be populated here -->
+            </div>
+        </div>
     </div>
     <div id="graph"></div>
     <div id="tooltip" class="hidden"></div>
     <div id="card" class="hidden"></div>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="static/js/lens.js"></script>
+    <script src="static/js/dropdown.js"></script>
     <script src="static/js/script.js"></script>
+    <!-- <script src="static/js/filtering.js"></script> -->
+    <!-- <script src="static/js/graph.js"></script> -->
 </body>
 </html>

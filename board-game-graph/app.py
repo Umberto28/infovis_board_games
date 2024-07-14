@@ -16,40 +16,46 @@ def data():
 
 @app.route('/api/boardgames', methods=['GET'])
 def get_boardgames():
-    year = request.args.get('year', type=int)
-    minplayers = request.args.get('minplayers', type=int)
-    maxplayers = request.args.get('maxplayers', type=int)
-    minplaytime = request.args.get('minplaytime', type=int)
-    maxplaytime = request.args.get('maxplaytime', type=int)
-    minage = request.args.get('minage', type=int)
-    category = request.args.get('categories')
-    mechanic = request.args.get('mechanics')
+    year = request.args.get('year')
+    minplayers = request.args.get('minplayers')
+    maxplayers = request.args.get('maxplayers')
+    minplaytime = request.args.get('minplaytime')
+    maxplaytime = request.args.get('maxplaytime')
+    minage = request.args.get('minage')
+    categories = request.args.get('categories')
+    mechanics = request.args.get('mechanics')
     designer = request.args.get('designer')
 
     filtered_boardgames = board_games
 
     if year:
-        filtered_boardgames = [game for game in filtered_boardgames if game['year'] == year]
+        years = list(map(int, year.split('|')))
+        filtered_boardgames = [game for game in filtered_boardgames if game['year'] in years]
     if minplayers:
-        filtered_boardgames = [game for game in filtered_boardgames if game['minplayers'] >= minplayers] # is == better?
+        minplayers_list = list(map(int, minplayers.split('|')))
+        filtered_boardgames = [game for game in filtered_boardgames if game['minplayers'] in minplayers_list]
     if maxplayers:
-        filtered_boardgames = [game for game in filtered_boardgames if game['maxplayers'] <= maxplayers] # is == better?
+        maxplayers_list = list(map(int, maxplayers.split('|')))
+        filtered_boardgames = [game for game in filtered_boardgames if game['maxplayers'] in maxplayers_list]
     if minplaytime:
-        filtered_boardgames = [game for game in filtered_boardgames if game['minplaytime'] >= minplaytime] # is == better?
+        minplaytime_list = list(map(int, minplaytime.split('|')))
+        filtered_boardgames = [game for game in filtered_boardgames if game['minplaytime'] in minplaytime_list]
     if maxplaytime:
-        filtered_boardgames = [game for game in filtered_boardgames if game['maxplaytime'] <= maxplaytime] # is == better?
+        maxplaytime_list = list(map(int, maxplaytime.split('|')))
+        filtered_boardgames = [game for game in filtered_boardgames if game['maxplaytime'] in maxplaytime_list]
     if minage:
-        filtered_boardgames = [game for game in filtered_boardgames if game['minage'] >= minage] # is == better?
-    if category: # implement a checkbox instead of a dropdown to make multiple categories filtering possible
-        filtered_boardgames = [game for game in filtered_boardgames
-                               if any(categories['name'] == category for categories in game['types']['categories'])]
-    if mechanic: # implement a checkbox instead of a dropdown to make multiple mechanics filtering possible
-        filtered_boardgames = [game for game in filtered_boardgames
-                               if any(mechanics['name'] == mechanic for mechanics in game['types']['mechanics'])]
-    if designer: # implement a checkbox instead of a dropdown to make multiple designers filtering possible
-        filtered_boardgames = [game for game in filtered_boardgames
-                               if any(designer_of_game['name'] == designer for designer_of_game in game['credit']['designer'])]
-    
+        minage_list = list(map(int, minage.split('|')))
+        filtered_boardgames = [game for game in filtered_boardgames if game['minage'] in minage_list]
+    if categories:
+        categories_list = categories.split('|')
+        filtered_boardgames = [game for game in filtered_boardgames if any(category['name'] in categories_list for category in game['types']['categories'])]
+    if mechanics:
+        mechanics_list = mechanics.split('|')
+        filtered_boardgames = [game for game in filtered_boardgames if any(mechanic['name'] in mechanics_list for mechanic in game['types']['mechanics'])]
+    if designer:
+        designer_list = designer.split('|')
+        filtered_boardgames = [game for game in filtered_boardgames if any(designer['name'] in designer_list for designer in game['credit']['designer'])]
+
     return jsonify(filtered_boardgames)
 
 # @app.route('/data/year')
