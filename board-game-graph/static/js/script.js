@@ -3,16 +3,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const width = document.getElementById('graph').clientWidth;
     const height = document.getElementById('graph').clientHeight;
-    
     // const width = window.innerWidth;
     // const height = window.innerHeight;
-
     console.log('Graph dimensions:', width, height);
 
     const svg = d3.select('#graph').append('svg')
         .attr('width', width)
         .attr('height', height);
-
     console.log('SVG created');
 
     const tooltip = d3.select('#tooltip');
@@ -37,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const updateGraph = (data) => {
         svg.selectAll("*").remove();
-
         console.log('Data loaded:', data);
 
         const nodes = data.map(game => ({ id: game.id, name: game.title }));
@@ -57,20 +53,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         console.log('Links:', links.length);
 
-        const datasetByYear = data.map(game => {
-            return {
-              id: game.id,
-              title: game.title,
-              year: game.year
-            };
-          });
-          console.log(datasetByYear);
-
         const simulation = d3.forceSimulation(nodes)
             .force('link', d3.forceLink(links).id(d => d.id).distance(60).strength(0.05))
             .force('charge', d3.forceManyBody().strength(-100))
             .force('center', d3.forceCenter(width / 2, height / 2))
-            .force('collide', d3.forceCollide().radius(23).strength(0.6));
+            .force('collide', d3.forceCollide().radius(21).strength(0.6));
 
         const link = svg.append('g')
             .selectAll('line')
