@@ -64,7 +64,7 @@ function applyLocalEdgeLens(svg, nodeSelection, linkSelection, width, height) {
         d3.selectAll('.node-popup').remove();
 
         // Show popups if there are at most 15 visible nodes and zoom is applied
-        if (visibleNodes.length <= 15 && transform.k > 1) {
+        if (visibleNodes.length <= 15 && transform.k > 3) {
             const popupContainer = svg.append('g').attr('class', 'node-popup-container');
 
             visibleNodes.forEach(node => {
