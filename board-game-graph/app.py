@@ -58,9 +58,5 @@ def get_boardgames():
 
     return jsonify(filtered_boardgames)
 
-# @app.route('/data/year')
-# def data_year():
-#     return jsonify(board_games)
-
 if __name__ == '__main__':
     app.run(debug=True)
