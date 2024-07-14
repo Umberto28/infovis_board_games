@@ -71,7 +71,16 @@ document.addEventListener('DOMContentLoaded', function() {
             event.stopPropagation();
             const game = data.find(game => game.id === d.id);
             card.classed('hidden', false)
-                .html(`<h3>${game.title}</h3><p>${game.year}</p>`)
+                .html(`
+                <h2>${game.title}</h2>
+                <p><strong>Year:</strong> ${game.year}</p>
+                <p><strong>Players:</strong> ${game.minplayers} - ${game.maxplayers}</p>
+                <p><strong>Play Time:</strong> ${game.minplaytime} - ${game.maxplaytime} mins</p>
+                <p><strong>Age:</strong> ${game.minage}+</p>
+                <p><strong>Categories:</strong> ${game.types.categories.map(c => c.name).join(', ')}</p>
+                <p><strong>Mechanics:</strong> ${game.types.mechanics.map(m => m.name).join(', ')}</p>
+                <p><strong>Designer:</strong> ${game.credit.designer.map(d => d.name).join(', ')}</p>
+                `)
                 .style('left', (event.pageX + 10) + 'px')
                 .style('top', (event.pageY + 10) + 'px');
             console.log('Card shown:', game);
@@ -147,7 +156,6 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     const createCheckboxDropdown = (id, key) => {
-        const dropdown = document.getElementById(id + '-dropdown');
         fetchData().then(data => {
             let values;
             if (key === 'categories' || key === 'mechanics') {
@@ -172,9 +180,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 container.appendChild(label);
             });
 
-            // Add event listeners to checkboxes
+            // adds event listeners to checkboxes
             container.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
                 checkbox.addEventListener('change', filterAndUpdateGraph);
+            });
+            
+            // clear filters button event
+            document.getElementById('clear-filters').addEventListener('click', () => {
+                document.querySelectorAll('.dropdown-content input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                fetchData().then(data => updateGraph(data)); // update graph with all filters cleared
             });
         });
     };
