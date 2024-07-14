@@ -18,19 +18,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const tooltip = d3.select('#tooltip');
     const card = d3.select('#card');
 
+    const getSelectedValues = (selectElement) => {
+        return Array.from(selectElement.selectedOptions).map(option => option.value).filter(value => value);
+    };
+
     const fetchData = (year, minplayers, maxplayers, minplaytime, maxplaytime, minage, categories, mechanics, designer) => {
         let url = '/api/boardgames';
-        let params = [];
-        if (year) params.push(`year=${year}`);
-        if (minplayers) params.push(`minplayers=${minplayers}`);
-        if (maxplayers) params.push(`maxplayers=${maxplayers}`);
-        if (minplaytime) params.push(`minplaytime=${minplaytime}`);
-        if (maxplaytime) params.push(`maxplaytime=${maxplaytime}`);
-        if (minage) params.push(`minage=${minage}`);
-        if (categories) params.push(`categories=${categories}`);
-        if (mechanics) params.push(`mechanics=${mechanics}`);
-        if (designer) params.push(`designer=${designer}`);
-        if (params.length > 0) url += `?${params.join('&')}`;
+        let params = new URLSearchParams();
+        // At first I used ',' for joining but some "mechanics" have it inside their names
+        // I changed everyone to '|' to make it more universal
+        if (year) params.append('year', year.join('|'));
+        if (minplayers) params.append('minplayers', minplayers.join('|'));
+        if (maxplayers) params.append('maxplayers', maxplayers.join('|'));
+        if (minplaytime) params.append('minplaytime', minplaytime.join('|'));
+        if (maxplaytime) params.append('maxplaytime', maxplaytime.join('|'));
+        if (minage) params.append('minage', minage.join('|'));
+        if (categories) params.append('categories', categories.join('|'));
+        if (mechanics) params.append('mechanics', mechanics.join('|'));
+        if (designer) params.append('designer', designer.join('|'));
+        url += `?${params.toString()}`;
         return fetch(url)
             .then(response => response.json());
     };
@@ -190,15 +196,15 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     const filterAndUpdateGraph = () => {
-        const year = document.getElementById('year').value;
-        const minplayers = document.getElementById('minplayers').value;
-        const maxplayers = document.getElementById('maxplayers').value;
-        const minplaytime = document.getElementById('minplaytime').value;
-        const maxplaytime = document.getElementById('maxplaytime').value;
-        const minage = document.getElementById('minage').value;
-        const categories = document.getElementById('categories').value;
-        const mechanics = document.getElementById('mechanics').value;
-        const designer = document.getElementById('designer').value;
+        const year = getSelectedValues(document.getElementById('year'));
+        const minplayers = getSelectedValues(document.getElementById('minplayers'));
+        const maxplayers = getSelectedValues(document.getElementById('maxplayers'));
+        const minplaytime = getSelectedValues(document.getElementById('minplaytime'));
+        const maxplaytime = getSelectedValues(document.getElementById('maxplaytime'));
+        const minage = getSelectedValues(document.getElementById('minage'));
+        const categories = getSelectedValues(document.getElementById('categories'));
+        const mechanics = getSelectedValues(document.getElementById('mechanics'));
+        const designer = getSelectedValues(document.getElementById('designer'));
 
         fetchData(year, minplayers, maxplayers, minplaytime, maxplaytime, minage,
             categories, mechanics, designer).then(data => updateGraph(data));

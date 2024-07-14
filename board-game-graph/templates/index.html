@@ -10,42 +10,33 @@
     <h1>Top-100 Board Games Visualization</h1>
     <div>
         <label for="year">Year:</label>
-        <select id="year">
-            <option value="">All</option>
+        <select id="year" multiple>
         </select>
         <label for="minplayers">Min Players:</label>
-        <select id="minplayers">
-            <option value="">All</option> <!-- might be unneccessary as All option corresponds to minplayers >= 1 option -->
+        <select id="minplayers" multiple>
         </select>
-        <label for="maxplayers">Max Players:</label> <!-- All option corresponds to maxplayer <= 8 option -->
-        <select id="maxplayers">
-            <option value="">All</option>
+        <label for="maxplayers">Max Players:</label>
+        <select id="maxplayers" multiple>
         </select>
-        <label for="minplaytime">Min Playtime:</label> <!-- All option corresponds to minplaytime >= 5 option -->
-        <select id="minplaytime">
-            <option value="">All</option>
+        <label for="minplaytime">Min Playtime:</label>
+        <select id="minplaytime" multiple>
         </select>
-        <label for="maxplaytime">Max Playtime:</label> <!-- All option corresponds to maxplaytime <= 1000 option -->
-        <select id="maxplaytime">
-            <option value="">All</option>
+        <label for="maxplaytime">Max Playtime:</label>
+        <select id="maxplaytime" multiple>
         </select>
-        <label for="minage">Min Player Age:</label> <!-- All option corresponds to minplayerage >= 8 option -->
-        <select id="minage">
-            <option value="">All</option>
+        <label for="minage">Min Player Age:</label>
+        <select id="minage" multiple>
         </select>
     </div>
     <div>
         <label for="categories">Categories:</label>
-        <select id="categories">
-            <option value="">All</option>
+        <select id="categories" multiple>
         </select>
         <label for="mechanics">Mechanics:</label>
-        <select id="mechanics">
-            <option value="">All</option>
+        <select id="mechanics" multiple>
         </select>
         <label for="designer">Designer:</label>
-        <select id="designer">
-            <option value="">All</option>
+        <select id="designer" multiple>
         </select>
     </div>
     <div id="graph"></div>
