@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .data(links)
             .enter()
             .append('line')
-                .attr('stroke', '#000')
+                .attr('stroke', '#636363')
                 .attr('stroke-opacity', 0.16);
 
         const node = svg.append('g')
@@ -86,8 +86,8 @@ document.addEventListener('DOMContentLoaded', function() {
             .enter()
             .append('circle')
                 .attr('r', 7)
-                .attr('fill', '#CC0000')
-                .attr('stroke', '#000')
+                .attr('fill', '#a30202')
+                .attr('stroke', '#660101')
             .call(drag(simulation));
 
         node.on('mouseover', (event, d) => {
