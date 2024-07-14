@@ -150,21 +150,12 @@ document.addEventListener('DOMContentLoaded', function() {
     //             FILTERING AND DROPDOWN CREATION             //
     /////////////////////////////////////////////////////////////
 
-    const fetchData = (year, minplayers, maxplayers, minplaytime, maxplaytime, minage, categories, mechanics, designer) => {
+    const fetchData = (params = {}) => {
         let url = '/api/boardgames';
-        let params = new URLSearchParams();
-        // At first I used ',' for joining but some [mechanics] have it inside their names
-        // I changed everyone's ',' to '|' to make it universal
-        if (year) params.append('year', year.join('|'));
-        if (minplayers) params.append('minplayers', minplayers.join('|'));
-        if (maxplayers) params.append('maxplayers', maxplayers.join('|'));
-        if (minplaytime) params.append('minplaytime', minplaytime.join('|'));
-        if (maxplaytime) params.append('maxplaytime', maxplaytime.join('|'));
-        if (minage) params.append('minage', minage.join('|'));
-        if (categories) params.append('categories', categories.join('|'));
-        if (mechanics) params.append('mechanics', mechanics.join('|'));
-        if (designer) params.append('designer', designer.join('|'));
-        url += `?${params.toString()}`;
+        let queryParams = new URLSearchParams(params).toString();
+        if (queryParams) {
+            url += `?${queryParams}`;
+        }
         return fetch(url)
             .then(response => response.json());
     };
@@ -217,8 +208,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const mechanics = getSelectedValues('mechanics');
         const designer = getSelectedValues('designer');
 
-        fetchData(year, minplayers, maxplayers, minplaytime, maxplaytime, minage,
-            categories, mechanics, designer).then(data => updateGraph(data));
+        fetchData({
+            year: year.join('|'),
+            minplayers: minplayers.join('|'),
+            maxplayers: maxplayers.join('|'),
+            minplaytime: minplaytime.join('|'),
+            maxplaytime: maxplaytime.join('|'),
+            minage: minage.join('|'),
+            categories: categories.join('|'),
+            mechanics: mechanics.join('|'),
+            designer: designer.join('|')
+        }).then(data => updateGraph(data));
     };
 
     // initialize dropdowns (filling options)
