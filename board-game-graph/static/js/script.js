@@ -184,14 +184,6 @@ document.addEventListener('DOMContentLoaded', function() {
             container.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
                 checkbox.addEventListener('change', filterAndUpdateGraph);
             });
-            
-            // clear filters button event
-            document.getElementById('clear-filters').addEventListener('click', () => {
-                document.querySelectorAll('.dropdown-content input[type="checkbox"]').forEach(checkbox => {
-                    checkbox.checked = false;
-                });
-                fetchData().then(data => updateGraph(data)); // update graph with all filters cleared
-            });
         });
     };
 
@@ -222,6 +214,14 @@ document.addEventListener('DOMContentLoaded', function() {
             designer: designer.join('|')
         }).then(data => updateGraph(data));
     };
+
+    // clear filters button event
+    document.getElementById('clear-filters').addEventListener('click', () => {
+        document.querySelectorAll('.dropdown-content input[type="checkbox"]').forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        fetchData().then(data => updateGraph(data)); // update graph with all filters cleared
+    });
 
     // initialize dropdowns (filling options)
     ['year', 'minplayers', 'maxplayers', 'minplaytime', 'maxplaytime', 'minage', 'categories', 'mechanics', 'designer'].forEach(classification => {
