@@ -25,8 +25,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const fetchData = (year, minplayers, maxplayers, minplaytime, maxplaytime, minage, categories, mechanics, designer) => {
         let url = '/api/boardgames';
         let params = new URLSearchParams();
-        // At first I used ',' for joining but some "mechanics" have it inside their names
-        // I changed everyone to '|' to make it more universal
+        // At first I used ',' for joining but some [mechanics] have it inside their names
+        // I changed everyone's ',' to '|' to make it universal
         if (year) params.append('year', year.join('|'));
         if (minplayers) params.append('minplayers', minplayers.join('|'));
         if (maxplayers) params.append('maxplayers', maxplayers.join('|'));
