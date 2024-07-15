@@ -58,5 +58,43 @@ def get_boardgames():
 
     return jsonify(filtered_boardgames)
 
+@app.route('/api/boardgames_cluster', methods=['GET'])
+def get_boardgames_cluster():
+    cluster_attr = list(request.args.keys())[0]
+    print(cluster_attr)
+    clustered_boardgames = {}
+    
+    if (cluster_attr == 'categories' or cluster_attr == 'mechanics'):
+        for entity in board_games:
+            attr = entity.get('types').get(cluster_attr)
+            for a in attr:
+                name = a.get('name')
+                if name is not None:
+                    if name not in clustered_boardgames:
+                        clustered_boardgames[name] = 0
+                    clustered_boardgames[name] += 1
+    elif (cluster_attr == 'designer'):
+        for entity in board_games:
+            attr = entity.get('credit').get(cluster_attr)
+            for a in attr:
+                name = a.get('name')
+                if name is not None:
+                    if name not in clustered_boardgames:
+                        clustered_boardgames[name] = 0
+                    clustered_boardgames[name] += 1
+    else:
+        for entity in board_games:
+            attr = entity.get(cluster_attr)
+            if attr is not None:
+                if attr not in clustered_boardgames:
+                    clustered_boardgames[attr] = 0
+                clustered_boardgames[attr] += 1
+
+    return jsonify(clustered_boardgames)
+
+@app.route('/cluster_vis')
+def cluster_vis():
+    return render_template('cluster_vis.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
