@@ -232,4 +232,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // initialize graph
     fetchData().then(data => updateGraph(data));
+    // previously
+    // d3.json('/data').then(data => updateGraph(data));
 });

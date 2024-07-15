@@ -1,6 +1,6 @@
 // script that handles dropdowns, visibility toggling, and checkbox interactions
 document.addEventListener('DOMContentLoaded', () => {
-    // shows dropdown when button is clicked
+    // show dropdown when button is clicked
     document.querySelectorAll('.dropbtn').forEach(button => {
         button.addEventListener('click', () => {
             const currentDropdown = button.nextElementSibling;
@@ -17,14 +17,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // prevents dropdown from closing when clicking inside it
+    // prevent dropdown from closing when clicking inside it
     document.querySelectorAll('.dropdown-content').forEach(dropdown => {
         dropdown.addEventListener('click', (event) => {
             event.stopPropagation();
         });
     });
 
-    // closes dropdown with clicking outside
+    // close dropdown with clicking outside
     window.addEventListener('click', (event) => {
         if (!event.target.matches('.dropbtn')) {
             document.querySelectorAll('.dropdown-content').forEach(dropdown => {
