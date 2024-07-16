@@ -24,7 +24,7 @@ def get_boardgames():
     minage = request.args.get('minage')
     categories = request.args.get('categories')
     mechanics = request.args.get('mechanics')
-    designer = request.args.get('designer')
+    designers = request.args.get('designer')
 
     filtered_boardgames = board_games
 
@@ -46,15 +46,37 @@ def get_boardgames():
     if minage:
         minage_list = list(map(int, minage.split('|')))
         filtered_boardgames = [game for game in filtered_boardgames if game['minage'] in minage_list]
+
     if categories:
         categories_list = categories.split('|')
-        filtered_boardgames = [game for game in filtered_boardgames if any(category['name'] in categories_list for category in game['types']['categories'])]
+        categories_mode = categories_list[0]
+        if categories_mode == 'AND':
+            categories_list.pop(0)
+            filtered_boardgames = [game for game in filtered_boardgames
+                                    if all(any(c['name'] == category for c in game['types']['categories'])
+                                        for category in categories_list)]
+        else:
+            filtered_boardgames = [game for game in filtered_boardgames if any(category['name'] in categories_list for category in game['types']['categories'])]
     if mechanics:
         mechanics_list = mechanics.split('|')
-        filtered_boardgames = [game for game in filtered_boardgames if any(mechanic['name'] in mechanics_list for mechanic in game['types']['mechanics'])]
-    if designer:
-        designer_list = designer.split('|')
-        filtered_boardgames = [game for game in filtered_boardgames if any(designer['name'] in designer_list for designer in game['credit']['designer'])]
+        mechanics_mode = mechanics_list[0]
+        if mechanics_mode == 'AND':
+            mechanics_list.pop(0)
+            filtered_boardgames = [game for game in filtered_boardgames
+                                    if all(any(m['name'] == mechanic for m in game['types']['mechanics'])
+                                        for mechanic in mechanics_list)]
+        else:
+            filtered_boardgames = [game for game in filtered_boardgames if any(mechanic['name'] in mechanics_list for mechanic in game['types']['mechanics'])]
+    if designers:
+        designers_list = designers.split('|')
+        designers_mode = designers_list[0]
+        if designers_mode == 'AND':
+            designers_list.pop(0)
+            filtered_boardgames = [game for game in filtered_boardgames
+                                    if all(any(d['name'] == designer for d in game['types']['designer'])
+                                        for designer in designers_list)]
+        else:
+            filtered_boardgames = [game for game in filtered_boardgames if any(designer['name'] in designers_list for designer in game['credit']['designer'])]
 
     return jsonify(filtered_boardgames)
 
