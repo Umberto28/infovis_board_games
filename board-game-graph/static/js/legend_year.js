@@ -1,27 +1,30 @@
 // script that handles legend creation for graph visualization
-const addLegend = (svg, nodes, colorScale, property) => {
+const addLegend = (svg, nodes, colorScale) => {
     svg.selectAll('.legend').remove(); // clear existing legend
-
-    const uniqueValues = [...new Set(nodes.map(node => node[property]))].sort((a, b) => a - b);
-    // implement different sort when dealing with categories, mechanics and designers
+    const years = [...new Set(nodes.map(node => node.year))].sort((a, b) => a - b);
 
     const legend = svg.append('g')
         .attr('class', 'legend')
         .attr('transform', 'translate(20, 20)'); // adjust position here
 
-    uniqueValues.forEach((value, i) => {
+    years.forEach((year, i) => {
         const legendRow = legend.append('g')
             .attr('transform', `translate(0, ${i * 20})`) // adjust spacing here
             .on('click', () => {
                 const isActive = legendRow.classed('active'); // used for toggling highlight of a certain year
                 
-                // toggle active state
-                legendRow.classed('active', !isActive);
+                // when already active, it this defaults it back to inactive
+                legendRow.classed('active', false);
+                svg.selectAll('circle').filter(d => d.year === year).classed('highlighted', false).attr('r', 7).attr('stroke', '#fff'); // reset node
 
-                svg.selectAll('circle').filter(d => d[property] === value)
-                    .classed('highlighted', !isActive)
-                    .attr('r', isActive ? 7 : 10)
-                    .attr('stroke', isActive ? '#fff' : 'black');
+                // if inactive, then make it active when clicking
+                if (!isActive) {
+                    legendRow.classed('active', true);
+                    svg.selectAll('circle').filter(d => d.year === year)
+                    .classed('highlighted', true)
+                    .attr('r', 10)
+                    .attr('stroke', 'black');
+                }
             });
 
             // Mouse Hovering version
@@ -39,12 +42,12 @@ const addLegend = (svg, nodes, colorScale, property) => {
         legendRow.append('rect')
             .attr('width', 10)
             .attr('height', 10)
-            .attr('fill', colorScale(value));
+            .attr('fill', colorScale(year));
 
         legendRow.append('text')
             .attr('x', 20)
             .attr('y', 10)
             .attr('text-anchor', 'start')
-            .text(value);
+            .text(year);
     });
 };

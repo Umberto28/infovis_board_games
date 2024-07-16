@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const tooltip = d3.select('#tooltip');
     const card = d3.select('#card');
 
+    var property = 'year'; // default property, maybe add 'no property'?
+
     // must define another color scheme, as the following color scheme only contains 10 colors
     const colorScale = d3.scaleOrdinal(d3.schemeCategory10); // example color scheme
 
@@ -25,8 +27,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const nodes = data.map(game => ({
             id: game.id,
             name: game.title,
-            year: game.year // year must be included, else nodes of different years can't be distinguished (for coloring)
-            // must also be implemented for other parameters
+            year: game.year,
+            minplayers: game.minplayers,
+            maxplayers: game.maxplayers,
+            minplaytime: game.minplaytime,
+            maxplaytime: game.maxplaytime,
+            minage: game.minage
+            // must also be implemented for other parameters (categories, mechanics, designers)
         }));
         console.log('Nodes:', nodes.length);
 
@@ -66,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .append('circle')
                 .attr('r', 7) // default radius: if changed, change also for legend.js
                 //.attr('fill', '#a30202') // one color
-                .attr('fill', d => colorScale(d.year))
+                .attr('fill', d => colorScale(d[property]))
                 .attr('stroke', '#fff')
                 .attr('stroke-width', '1.5px')
             .call(drag(simulation));
@@ -141,7 +148,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Apply Local Edge Lens
         // applyLocalEdgeLens(svg, node, link, width, height);
 
-        addLegend(svg, nodes, colorScale);
+        // create legend for current property
+        addLegend(svg, nodes, colorScale, property);
     };
 
     /////////////////////////////////////////////////////////////
@@ -246,6 +254,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // initialize dropdowns (filling options)
     ['year', 'minplayers', 'maxplayers', 'minplaytime', 'maxplaytime', 'minage', 'categories', 'mechanics', 'designer'].forEach(classification => {
         createCheckboxDropdown(classification, classification);
+    });
+
+    document.getElementById('property').addEventListener('change', () => {
+        property = document.getElementById('property').value;
+        fetchData().then(data => updateGraph(data));
     });
 
     // initialize graph
