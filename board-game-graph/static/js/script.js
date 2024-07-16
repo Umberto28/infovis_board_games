@@ -15,11 +15,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const tooltip = d3.select('#tooltip');
     const card = d3.select('#card');
 
+    // must define another color scheme, as the following color scheme only contains 10 colors
+    const colorScale = d3.scaleOrdinal(d3.schemeCategory10); // example color scheme
+
     const updateGraph = (data) => {
         svg.selectAll("*").remove();
         console.log('Data loaded:', data);
 
-        const nodes = data.map(game => ({ id: game.id, name: game.title }));
+        const nodes = data.map(game => ({
+            id: game.id,
+            name: game.title,
+            year: game.year // year must be included, else nodes of different years can't be distinguished (for coloring)
+            // must also be implemented for other parameters
+        }));
         console.log('Nodes:', nodes.length);
 
         const nodeIds = new Set(nodes.map(node => node.id));
@@ -56,8 +64,9 @@ document.addEventListener('DOMContentLoaded', function() {
             .data(nodes)
             .enter()
             .append('circle')
-                .attr('r', 7)
-                .attr('fill', '#a30202')
+                .attr('r', 7) // default radius: if changed, change also for legend.js
+                //.attr('fill', '#a30202') // one color
+                .attr('fill', d => colorScale(d.year))
                 .attr('stroke', '#fff')
                 .attr('stroke-width', '1.5px')
             .call(drag(simulation));
@@ -130,8 +139,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Apply Local Edge Lens
-        applyLocalEdgeLens(svg, node, link, width, height);
+        // applyLocalEdgeLens(svg, node, link, width, height);
+
+        addLegend(svg, nodes, colorScale);
     };
+
+    /////////////////////////////////////////////////////////////
+    //                      CARD HANDLING                      //
+    /////////////////////////////////////////////////////////////
 
     document.addEventListener('click', () => {
         card.classed('hidden', true);
@@ -170,10 +185,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             else {
                 values = [...new Set(data.map(game => game[key]))];
+                // using no param .sort() with numbers, an example output is: [10, 100, 20, 250, 30, 50, 650, ...]
+                // this is why we need a custom comparator for numbers (int in these cases)
+                values.sort((a, b) => a - b);
             }
-            // using no param .sort() with numbers, an example output is: [10, 100, 20, 250, 30, 50, 650, ...]
-            // this is why we need a custom comparator for numbers (int in these cases)
-            values.sort((a, b) => a - b);
+
             const container = document.getElementById(id + '-dropdown');
             // container.innerHTML = ''; // Clear existing options, commented for now because 'AND' option is static
             // 'AND' option can also be created here by uncommenting the following line and removing the label in index.html
