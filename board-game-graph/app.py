@@ -10,7 +10,7 @@ with open('dataset/boardgames_100_clean.json', encoding='utf-8') as f:
 def index():
     return render_template('index.html')
 
-@app.route('/data') # accessible only by adding /data in the URL, maybe implement link?
+@app.route('/data') # accessible only by adding /data in the URL, maybe implement link? Unused for now
 def data():
     return jsonify(board_games)
 

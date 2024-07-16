@@ -6,6 +6,7 @@
     <title>Board Games View</title>
     <link rel="stylesheet" href="static/css/style.css">
     <link rel="stylesheet" href="static/css/button_style.css">
+    <link rel="stylesheet" href="static/css/switch_style.css">
 </head>
 <body>
     <h1>Top-100 Board Games Visualization</h1>
@@ -56,21 +57,30 @@
         <div class="dropdown">
             <button class="dropbtn">Select Categories</button>
             <div id="categories-dropdown" class="dropdown-content">
-                <label><input type="checkbox" value="AND"> AND</label>
+                <label class="switch-label">
+                    <input type="checkbox" value="AND" class="switch-input">
+                    <span class="slider round"></span><span class="switch-text">AND</span>
+                </label>
                 <!-- Category options will be populated here -->
             </div>
         </div>
         <div class="dropdown">
             <button class="dropbtn">Select Mechanics</button>
             <div id="mechanics-dropdown" class="dropdown-content">
-                <label><input type="checkbox" value="AND"> AND</label>
+                <label class="switch-label">
+                    <input type="checkbox" value="AND" class="switch-input">
+                    <span class="slider round"></span><span class="switch-text">AND</span>
+                </label>
                 <!-- Mechanic options will be populated here -->
             </div>
         </div>
         <div class="dropdown">
             <button class="dropbtn">Select Designers</button>
             <div id="designer-dropdown" class="dropdown-content">
-                <label><input type="checkbox" value="AND"> AND</label>
+                <label class="switch-label">
+                    <input type="checkbox" value="AND" class="switch-input">
+                    <span class="slider round"></span><span class="switch-text">AND</span>
+                </label>
                 <!-- Designer options will be populated here -->
             </div>
         </div>
