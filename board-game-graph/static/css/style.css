@@ -4,10 +4,12 @@ body {
     flex-direction: column;
     align-items: center;
 }
+
 #graph {
     width: 100%;
     height: 600px;
 }
+
 #tooltip {
     position: absolute;
     background: white;
@@ -15,9 +17,11 @@ body {
     padding: 10px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
+
 #tooltip.hidden {
     display: none;
 }
+
 #card {
     position: absolute;
     background: white;
@@ -26,6 +30,7 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     max-width: 300px;
 }
+
 #card.hidden {
     display: none;
 }
@@ -60,3 +65,4 @@ body {
 .hidden {
     display: none;
 }
+
