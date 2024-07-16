@@ -175,7 +175,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // this is why we need a custom comparator for numbers (int in these cases)
             values.sort((a, b) => a - b);
             const container = document.getElementById(id + '-dropdown');
-            // container.innerHTML = ''; // Clear existing options
+            // container.innerHTML = ''; // Clear existing options, commented for now because 'AND' option is static
+            // 'AND' option can also be created here by uncommenting the following line and removing the label in index.html
+            // container.appendChild(document.createElement('label').innerHTML = `<input type="checkbox" value="AND"> AND`)
             values.forEach(value => {
                 const label = document.createElement('label');
                 label.innerHTML = `<input type="checkbox" value="${value}"> ${value}`;
