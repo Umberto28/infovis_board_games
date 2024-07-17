@@ -26,7 +26,7 @@ const addLegend = (svg, nodes, colorScale, property) => {
 
                 svg.selectAll('circle').filter(d => d[property] === value)
                     .classed('highlighted', !isActive)
-                    .attr('r', isActive ? 7 : 10)
+                    // .attr('r', isActive ? 7 : 10) // commented for now as it causes bugs when zooming
                     .attr('stroke', isActive ? '#fff' : 'black');
             });
 
