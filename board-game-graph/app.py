@@ -1,6 +1,7 @@
-from flask import Flask, render_template, jsonify, request
-from jinja2 import TemplateNotFound
+import os
 import json
+from jinja2 import TemplateNotFound
+from flask import Flask, render_template, jsonify, request, send_from_directory
 
 app = Flask(__name__)
 
@@ -11,11 +12,19 @@ with open('dataset/boardgames_100_clean.json', encoding='utf-8') as f:
 def index():
     return render_template('sections/list_vis.html')
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(
+        os.path.join(app.root_path, 'static'),
+        'favicon.ico',
+        mimetype='image/vnd.microsoft.icon'
+    )
+
 @app.route('/<template>')
 def route_template(template):
     try:
 
-        if not template.endswith('.html'):
+        if not template.endswith('.html') :
             template += '.html'
 
         # Detect the current page
@@ -25,10 +34,12 @@ def route_template(template):
         return render_template("sections/" + template, segment=segment)
 
     except TemplateNotFound:
-        return render_template('home/page-404.html'), 404
+        # return render_template('home/page-404.html'), 404
+        print(f'{template}: Exeption 404')
 
     except:
-        return render_template('home/page-500.html'), 500
+        # return render_template('home/page-500.html'), 500
+        print(f'{template}: Exeption 500')
 
 
 # Helper - Extract current page name from request
