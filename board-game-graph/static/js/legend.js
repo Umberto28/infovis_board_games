@@ -28,19 +28,19 @@ const addLegend = (svg, nodes, colorScale, property) => {
                     .classed('highlighted', !isActive)
                     // .attr('r', isActive ? 7 : 10) // commented for now as it causes bugs when zooming
                     .attr('stroke', isActive ? '#fff' : 'black');
-            });
+            })
 
-            // Mouse Hovering version
-            //.on('mouseover', () => {
-            //    svg.selectAll('circle').filter(d => d.year === year)
-            //        .attr('r', 10) // enlarge nodes of highlighted year
-            //        .attr('stroke', 'black');
-            //})
-            //.on('mouseout', () => {
-            //    svg.selectAll('circle').filter(d => d.year === year)
-            //        .attr('r', 7) // reset node size
-            //        .attr('stroke', '#fff');
-            //});
+            .on('mouseover', () => {
+                svg.selectAll('circle').filter(d => d[property] === value)
+                    // .attr('r', 10) // enlarge nodes of highlighted year
+                    .attr('stroke', 'black');
+            })
+            .on('mouseout', () => {
+                const isActive = legendRow.classed('active');
+                svg.selectAll('circle').filter(d => d[property] === value)
+                    // .attr('r', 7) // reset node size
+                    .attr('stroke', isActive ? 'black' : '#fff');
+            });
 
         // legendRow.append('rect')
         legendRow.append('div')
