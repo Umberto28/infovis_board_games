@@ -1,4 +1,5 @@
 from flask import Flask, render_template, jsonify, request
+from jinja2 import TemplateNotFound
 import json
 
 app = Flask(__name__)
@@ -8,9 +9,43 @@ with open('dataset/boardgames_100_clean.json', encoding='utf-8') as f:
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('sections/list_vis.html')
 
-@app.route('/data') # accessible only by adding /data in the URL, maybe implement link? Unused for now
+@app.route('/<template>')
+def route_template(template):
+    try:
+
+        if not template.endswith('.html'):
+            template += '.html'
+
+        # Detect the current page
+        segment = get_segment(request)
+
+        # Serve the file (if exists) from app/templates/home/FILE.html
+        return render_template("sections/" + template, segment=segment)
+
+    except TemplateNotFound:
+        return render_template('home/page-404.html'), 404
+
+    except:
+        return render_template('home/page-500.html'), 500
+
+
+# Helper - Extract current page name from request
+def get_segment(request):
+    try:
+
+        segment = request.path.split('/')[-1]
+
+        if segment == '':
+            segment = 'list_vis'
+
+        return segment
+
+    except:
+        return None
+
+@app.route('/data')
 def data():
     return jsonify(board_games)
 
@@ -83,7 +118,6 @@ def get_boardgames():
 @app.route('/api/boardgames_cluster', methods=['GET'])
 def get_boardgames_cluster():
     cluster_attr = list(request.args.keys())[0]
-    print(cluster_attr)
     clustered_boardgames = {}
     
     if (cluster_attr == 'categories' or cluster_attr == 'mechanics'):
@@ -113,10 +147,6 @@ def get_boardgames_cluster():
                 clustered_boardgames[attr] += 1
 
     return jsonify(clustered_boardgames)
-
-@app.route('/cluster_vis')
-def cluster_vis():
-    return render_template('cluster_vis.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

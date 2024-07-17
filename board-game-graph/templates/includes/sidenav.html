@@ -1,0 +1,24 @@
+<div class="l-navbar" id="nav-bar">
+  <nav class="nav">
+      <div>
+          <div class="nav_list d-flex flex-column justify-content-center align-items-center">
+            <a class="nav-link align-middle px-0 {% if 'list_vis' in segment %} active {% endif %}" href="/list_vis.html">
+              <i class='bx bx-user nav_icon'></i>
+              <span class="nav_logo-name">Scoreboard</span>
+            </a>
+            <a class="nav-link align-middle px-0 {% if 'network_vis' in segment %} active {% endif %}" href="/network_vis.html">
+                <i class='bx bx-grid-alt nav_icon'></i>
+                <span class="nav_logo-name">Network Analysis</span>
+            </a>
+            <a class="nav-link align-middle px-0 {% if 'cluster_vis' in segment %} active {% endif %}" href="/cluster_vis.html">
+                <i class='bx bx-user nav_icon'></i>
+                <span class="nav_logo-name">Trends</span>
+            </a>
+          </div>
+      <!-- </div>
+       <a href="#" class="nav_link">
+          <i class='bx bx-log-out nav_icon'></i>
+          <span class="nav_name">SignOut</span>
+      </a> -->
+  </nav>
+</div>
