@@ -257,9 +257,11 @@ document.addEventListener('DOMContentLoaded', function() {
         createCheckboxDropdown(classification, classification);
     });
 
+    // change property event
     document.getElementById('property').addEventListener('change', () => {
         property = document.getElementById('property').value;
-        fetchData().then(data => updateGraph(data));
+        filterAndUpdateGraph();
+        // fetchData().then(data => updateGraph(data));
     });
 
     // initialize graph
