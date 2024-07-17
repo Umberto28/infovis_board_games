@@ -5,8 +5,13 @@ body {
     align-items: center;
 }
 
+.container {
+    display: flex;
+    align-items: center;
+}
+
 #graph {
-    width: 100%;
+    width: 1200px;
     height: 600px;
 }
 
@@ -66,17 +71,25 @@ body {
     display: none;
 }
 
-.legend:hover {
-    cursor: pointer;
+#legend-container {
+    margin-right: 20px; /* Space between legend and SVG */
 }
-.legend rect {
-    stroke: white;
-    stroke-width: 1px;
+.legend-row-color {
+    border: 2px solid white;
 }
-.legend text {
+.legend-row-text {
     font-size: 12px;
     fill: #333;
 }
-.legend g.active rect {
-    stroke: black; /* to highlight active legend item */
+.legend-row.active .legend-row-color {
+    border: 2px solid black; /* to highlight active legend item */
+}
+.legend-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+.legend-row div {
+    margin-right: 10px;
 }

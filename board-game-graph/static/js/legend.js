@@ -1,17 +1,23 @@
 // script that handles legend creation for graph visualization
 const addLegend = (svg, nodes, colorScale, property) => {
-    svg.selectAll('.legend').remove(); // clear existing legend
+    // svg.selectAll('.legend').remove(); // clear existing legend inside graph
+
+    const legendContainer = d3.select('#legend-container');
+
+    legendContainer.selectAll('*').remove();
 
     const uniqueValues = [...new Set(nodes.map(node => node[property]))].sort((a, b) => a - b);
-    // implement different sort when dealing with categories, mechanics and designers
+    // implement different sort in the future when dealing with categories, mechanics and designers
 
-    const legend = svg.append('g')
-        .attr('class', 'legend')
-        .attr('transform', 'translate(20, 20)'); // adjust position here
+    // const legend = svg.append('g')
+    const legend = legendContainer.append('div')
+        .attr('class', 'legend');
+        // .attr('transform', 'translate(20, 20)'); // adjust position here
 
     uniqueValues.forEach((value, i) => {
-        const legendRow = legend.append('g')
-            .attr('transform', `translate(0, ${i * 20})`) // adjust spacing here
+        const legendRow = legend.append('div')
+            .attr('class', 'legend-row')
+            // .attr('transform', `translate(0, ${i * 20})`) // adjust spacing here
             .on('click', () => {
                 const isActive = legendRow.classed('active'); // used for toggling highlight of a certain year
                 
@@ -36,15 +42,22 @@ const addLegend = (svg, nodes, colorScale, property) => {
             //        .attr('stroke', '#fff');
             //});
 
-        legendRow.append('rect')
-            .attr('width', 10)
-            .attr('height', 10)
-            .attr('fill', colorScale(value));
+        // legendRow.append('rect')
+        legendRow.append('div')
+            .attr('class', 'legend-row-color')
+            // .attr('width', 10)
+            // .attr('height', 10)
+            .style('width', '10px')
+            .style('height', '10px')
+            // .attr('fill', colorScale(value));
+            .style('background-color', colorScale(value));
 
-        legendRow.append('text')
-            .attr('x', 20)
-            .attr('y', 10)
-            .attr('text-anchor', 'start')
+        // legendRow.append('text')
+        legendRow.append('div')
+            .attr('class', 'legend-row-text')
+            // .attr('x', 20)
+            // .attr('y', 10)
+            // .attr('text-anchor', 'start')
             .text(value);
     });
 };

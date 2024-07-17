@@ -95,9 +95,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 <p><strong>Players:</strong> ${game.minplayers} - ${game.maxplayers}</p>
                 <p><strong>Play Time:</strong> ${game.minplaytime} - ${game.maxplaytime} mins</p>
                 <p><strong>Age:</strong> ${game.minage}+</p>
-                <p><strong>Categories:</strong> ${game.types.categories.map(c => c.name).join(', ')}</p>
-                <p><strong>Mechanics:</strong> ${game.types.mechanics.map(m => m.name).join(', ')}</p>
-                <p><strong>Designer:</strong> ${game.credit.designer.map(d => d.name).join(', ')}</p>
+                <p><strong>Categories:</strong> ${game.types.categories.map(c => c.name).join(' | ')}</p>
+                <p><strong>Mechanics:</strong> ${game.types.mechanics.map(m => m.name).join(' | ')}</p>
+                <p><strong>Designer:</strong> ${game.credit.designer.map(d => d.name).join(' | ')}</p>
                 `)
                 .style('left', (event.pageX + 10) + 'px')
                 .style('top', (event.pageY + 10) + 'px');
@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Apply Local Edge Lens
-        // applyLocalEdgeLens(svg, node, link, width, height);
+        applyLocalEdgeLens(svg, node, link, width, height);
 
         // create legend for current property
         addLegend(svg, nodes, colorScale, property);
