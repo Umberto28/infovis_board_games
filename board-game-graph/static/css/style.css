@@ -81,7 +81,7 @@ body {
     font-size: 12px;
     fill: #333;
 }
-.legend-row.active .legend-row-color {
+.legend-row.legend-active .legend-row-color {
     border: 2px solid black; /* to highlight active legend item */
 }
 .legend-row {

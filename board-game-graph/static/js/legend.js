@@ -19,10 +19,10 @@ const addLegend = (svg, nodes, colorScale, property) => {
             .attr('class', 'legend-row')
             // .attr('transform', `translate(0, ${i * 20})`) // adjust spacing here
             .on('click', () => {
-                const isActive = legendRow.classed('active'); // used for toggling highlight of a certain year
+                const isActive = legendRow.classed('legend-active'); // used for toggling highlight of a certain year
                 
                 // toggle active state
-                legendRow.classed('active', !isActive);
+                legendRow.classed('legend-active', !isActive);
 
                 svg.selectAll('circle').filter(d => d[property] === value)
                     .classed('highlighted', !isActive)
@@ -36,7 +36,7 @@ const addLegend = (svg, nodes, colorScale, property) => {
                     .attr('stroke', 'black');
             })
             .on('mouseout', () => {
-                const isActive = legendRow.classed('active');
+                const isActive = legendRow.classed('legend-active');
                 svg.selectAll('circle').filter(d => d[property] === value)
                     // .attr('r', 7) // reset node size
                     .attr('stroke', isActive ? 'black' : '#fff');
