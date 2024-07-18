@@ -33,7 +33,9 @@ document.addEventListener('DOMContentLoaded', function() {
             maxplayers: game.maxplayers,
             minplaytime: game.minplaytime,
             maxplaytime: game.maxplaytime,
-            minage: game.minage
+            minage: game.minage,
+            rank: game.rank,
+            reviews: game.rating.num_of_reviews
             // must also be implemented for other parameters (categories, mechanics, designers)
         }));
         console.log('Nodes:', nodes.length);
@@ -92,6 +94,9 @@ document.addEventListener('DOMContentLoaded', function() {
             card.classed('hidden', false)
                 .html(`
                 <h2>${game.title}</h2>
+                <p><strong>Rank:</strong> ${game.rank}</p>
+                <p><strong>Rating:</strong> ${game.rating.rating}</p>
+                <p><strong>Reviews:</strong> ${game.rating.num_of_reviews}</p>
                 <p><strong>Year:</strong> ${game.year}</p>
                 <p><strong>Players:</strong> ${game.minplayers} - ${game.maxplayers}</p>
                 <p><strong>Play Time:</strong> ${game.minplaytime} - ${game.maxplaytime} mins</p>

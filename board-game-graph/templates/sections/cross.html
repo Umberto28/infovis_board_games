@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %} Cluster {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+    <div>
+        <label for="x-axis-select">Select X-axis parameter:</label>
+        <select id="x-axis-select">
+            <option value="rank">Ranking by rating</option>
+            <option value="popularity">Ranking by popularity</option>
+        </select>
+    </div>
+    <div>
+        <label for="y-axis-select">Select Y-axis parameter:</label>
+        <select id="y-axis-select">
+            <option value="year">Year</option>
+            <option value="minplayers">Min Players</option>
+            <option value="maxplayers">Max Players</option>
+            <option value="minplaytime">Min Playtime</option>
+            <option value="maxplaytime">Max Playtime</option>
+            <option value="avgplaytime">Average Playtime</option>
+            <option value="minage">Min Age</option>
+        </select>
+    </div>
+    
+    <div class="container d-flex">
+        <div id="scatterplot"></div>
+    </div>
+    
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="static/js/scatterplot.js"></script>
+
+{% endblock content %}
