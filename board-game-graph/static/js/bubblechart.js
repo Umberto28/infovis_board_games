@@ -77,7 +77,7 @@ d3.json("/data").then(data => {
 
         // Add a color scale for ranking
         const color = d3.scaleSequential(d3.interpolateRdYlBu)
-            .domain([100, 1]);  // Rank 1 will be red, Rank 100 will be blue
+            .domain([5, 100]);  // Rank 1 will be red, Rank 100 will be blue
 
         // Add bubbles
         svg.append("g")
