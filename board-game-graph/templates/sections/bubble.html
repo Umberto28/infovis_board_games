@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %} Bubble Chart {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<style>
+  .tooltip {
+    position: absolute;
+    text-align: center;
+    width: auto;
+    height: auto;
+    padding: 10px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+  }
+  .card {
+    position: absolute;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    display: none;
+  }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+    <div class="container d-flex flex-column">
+        <div class="d-flex justify-content-between">
+            <label for="min-year">Select Min Year:</label>
+            <input type="range" id="min-year" step="1">
+            <span id="min-year-value">1876</span>
+        </div>
+        <div class="d-flex justify-content-between">
+            <label for="max-year">Select Max Year:</label>
+            <input type="range" id="max-year" step="1">
+            <span id="max-year-value">2024</span>
+        </div>
+        <div id="bubblechart"></div>
+        <div id="tooltip" class="tooltip"></div>
+        <div id="card" class="card"></div>
+    </div>
+    
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="static/js/bubblechart.js"></script>
+
+{% endblock content %}
