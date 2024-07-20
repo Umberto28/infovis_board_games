@@ -2,9 +2,9 @@
 
 :root {
     --header-height: 3rem;
-    --nav-width: 13%;
-    --first-color: #4723D9;
-    --first-color-light: #F7F6FB;
+    --nav-width: 17%;
+    --first-color: #216897;
+    --first-color-light: #EEEEEE;
     --white-color: #ffffff;
     --body-font: 'Nunito', sans-serif;
     --normal-font-size: 2rem;
@@ -58,7 +58,7 @@ a {
     width: var(--nav-width);
     height: 100vh;
     background-color: var(--first-color);
-    padding: .5rem 1rem 0 0;
+    padding: 1rem 1rem 1rem 1rem;
     transition: .5s;
     z-index: var(--z-fixed);
 }
@@ -71,45 +71,21 @@ a {
     overflow: hidden;
 }
 
-.nav_logo, .nav_link {
-    display: grid;
-    grid-template-columns: max-content max-content;
-    align-items: center;
-    column-gap: 1rem;
-    padding: .5rem 0 .5rem 1.5rem;
+.nav-link-icon {
+    font-size: 2.1rem;
+    color: var(--first-color-light);
 }
 
-.nav_logo {
-    margin-bottom: 2rem;
-}
-
-.nav_logo-icon {
-    font-size: 1.25rem;
-    color: var(--white-color);
-}
-
-.nav_logo-name {
+.nav-header-name {
     color: var(--white-color);
     font-weight: 700;
+    font-size: 26px;
 }
 
-.nav_link {
-    position: relative;
+.nav-link-name {
     color: var(--first-color-light);
-    margin-bottom: 1.5rem;
-    transition: .3s;
-}
-
-.nav_link:hover {
-    color: var(--white-color);
-}
-
-.nav_icon {
-    font-size: 1.25rem;
-}
-
-.nav_name {
-    color: var(--white-color);
+    font-weight: 600;
+    font-size: 21px;
 }
 
 .show {
@@ -117,15 +93,24 @@ a {
 }
 
 .active {
-    color: var(--white-color);
+    
+    .nav-link-icon{
+        font-size: 2.5rem;
+    }
+    
+    .nav-link-name{
+        color: var(--white-color);
+        font-weight: 700 !important;
+        font-size: 24px !important;
+    }
 }
 
 .active::before {
     content: '';
     position: absolute;
     left: 0;
-    width: 2px;
-    height: 32px;
+    width: 4px;
+    height: 50px;
     background-color: var(--white-color);
 }
 
@@ -151,11 +136,6 @@ a {
     
     .header_img img {
         width: 45px;
-    }
-    
-    .l-navbar {
-        left: 0;
-        padding: 1rem 1rem 0 0;
     }
     
     .show {
