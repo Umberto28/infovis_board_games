@@ -1,15 +1,12 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
 
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 .container {
     display: flex;
     align-items: center;
+}
+
+.text-col {
+    color: #201E43 !important;
 }
 
 #graph {
@@ -40,6 +37,14 @@ body {
 
 #card.hidden {
     display: none;
+}
+
+.chart-card {
+    border: 2px solid #216897 !important;
+}
+
+.filter-card {
+    background-color: #508C9B !important;
 }
 
 /* dropdown styling */
