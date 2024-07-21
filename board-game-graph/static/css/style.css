@@ -78,9 +78,12 @@
     display: none;
 }
 
+/* adds space between legend and container */
+/*
 #legend-container {
-    margin-right: 20px; /* Space between legend and SVG */
+    margin-right: auto;
 }
+*/
 .legend-row-color {
     border: 2px solid white;
 }
@@ -88,14 +91,15 @@
     font-size: 12px;
     fill: #333;
 }
-.legend-row.legend-active .legend-row-color {
-    border: 2px solid black; /* to highlight active legend item */
+.legend-row.legend-active .legend-row-color { /* to highlight active legend item */
+    border: 2px solid black;
 }
 .legend-row {
     display: flex;
     align-items: center;
     margin-bottom: 5px;
     cursor: pointer;
+    width: fit-content;
 }
 .legend-row div {
     margin-right: 10px;
