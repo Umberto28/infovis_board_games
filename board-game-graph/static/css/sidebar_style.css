@@ -3,7 +3,7 @@
 :root {
     --header-height: 3rem;
     --nav-width: 17%;
-    --first-color: #216897;
+    --first-color: #0F7173;
     --first-color-light: #EEEEEE;
     --white-color: #ffffff;
     --body-font: 'Nunito', sans-serif;
@@ -25,6 +25,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100vh;
 }
 
 a {
@@ -80,7 +81,7 @@ a {
 .nav-header-name {
     color: var(--white-color);
     font-weight: 700;
-    font-size: 26px;
+    font-size: 30px;
 }
 
 .nav-link-name {

@@ -6,7 +6,12 @@
 }
 
 .text-col {
-    color: #201E43 !important;
+    color: #f48244 !important;
+}
+
+.back-light {
+    background-color: rgb(244, 244, 244);
+    /* background-color: #FFE7D3; */
 }
 
 #graph {
@@ -40,11 +45,15 @@
 }
 
 .chart-card {
-    border: 2px solid #216897 !important;
+    border: 2px solid #f48244 !important;
+}
+
+.button-border {
+    border: 1px solid #f48244 !important;
 }
 
 .filter-card {
-    background-color: #508C9B !important;
+    background-color: #f48244 !important;
 }
 
 /* dropdown styling */
