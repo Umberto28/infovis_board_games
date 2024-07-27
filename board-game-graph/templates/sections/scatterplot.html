@@ -10,8 +10,13 @@
     <div>
         <label for="x-axis-select">Select X-axis parameter:</label>
         <select id="x-axis-select">
-            <option value="rank">Ranking by rating</option>
+            <option value="rating">Ranking by rating</option>
             <option value="popularity">Ranking by popularity</option>
+        </select>
+        <label for="x-order-select">Select X-axis ordering:</label>
+        <select id="x-order-select">
+            <option value="descending">Descending</option>
+            <option value="ascending">Ascending</option>
         </select>
     </div>
     <div>
@@ -30,6 +35,8 @@
     <div class="container d-flex">
         <div id="distribution"></div>
         <div id="scatterplot"></div>
+        <div id="tooltip" class="hidden"></div>
+        <div id="card" class="hidden"></div>
     </div>
     
     <script src="https://d3js.org/d3.v7.min.js"></script>
