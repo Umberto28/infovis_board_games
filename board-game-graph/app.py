@@ -1,6 +1,7 @@
 import os
 import json
 from jinja2 import TemplateNotFound
+import pandas as pd
 from flask import Flask, render_template, jsonify, request, send_from_directory
 
 app = Flask(__name__)
@@ -18,6 +19,7 @@ def group_games_by_attr(attr):
 with open('dataset/boardgames_100_clean.json', encoding='utf-8') as f:
     board_games = json.load(f)
     time_board_game = group_games_by_attr('year')
+    print(time_board_game.keys())
 
 @app.route('/')
 def index():
@@ -176,9 +178,39 @@ def get_boardgames_trend():
     trended_boardgames = []
     
     for key, value in time_board_game.items():
-        trended_boardgames.append({'year': key, 'avg': float(sum(v.get('rating').get('num_of_reviews') for v in value)) / len(value)})
+        trended_boardgames.append({'year': key, 'n_reviews': float(sum(v.get('rating').get('num_of_reviews') for v in value)) / len(value), 'rating': float(sum(v.get('rating').get('rating') for v in value)) / len(value)})
 
     return jsonify(trended_boardgames)
+
+@app.route('/api/boardgames_pietrend', methods=['GET'])
+def get_boardgames_pietrend():
+    year = int(request.args.get('year'))
+    attr = request.args.get('attr')
+    games_by_year = time_board_game[year]
+    pie_boardgames = pd.DataFrame(columns=['name', 'rating', 'n_rev', 'counter']).set_index('name')
+
+    if attr == 'designer':
+        attr_cat = 'credit'
+    else:
+        attr_cat = 'types'
+    
+    for game in games_by_year:
+        des = game.get(attr_cat).get(attr)
+        for d in des:
+            name = d.get('name')
+            if name not in pie_boardgames.index:
+                pie_boardgames.loc[d.get('name')] = [game.get('rating').get('rating'), game.get('rating').get('num_of_reviews'), 1]
+                
+            else: 
+                row = pie_boardgames.loc[d.get('name')]
+                row['rating'] += game.get('rating').get('rating')
+                row['n_rev'] += game.get('rating').get('num_of_reviews')
+                row['counter'] += 1
+
+    pie_boardgames = pie_boardgames.apply(lambda row: row / row['counter'], axis=1)
+
+    print(pie_boardgames)
+    return jsonify(pie_boardgames.to_dict())
 
 if __name__ == '__main__':
     app.run(debug=True)

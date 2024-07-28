@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM fully loaded and parsed');
 
     // Color palette for charts
-    const color = d3.scaleOrdinal().range(['#85edc3', '#e6a766', '#5288e4', '#e09793', '#af91df', '#dab974', '#53d55a', '#97f1a3', '#a7e290', '#e4d14f', '#e99561', '#3be8a7', '#9ae6b8', '#e6255c', '#d38664', '#7fdeed', '#b0dd9a', '#7097d3', '#4ac8d4', '#e9bcac', '#df9daa', '#e48e9c', '#948ce2', '#a5eedc', '#de938a', '#e04da1', '#dcca85', '#edd7a0', '#d2789f', '#c4ef9b', '#6fbae1', '#eae655', '#2edc3d', '#51c2e1', '#d14ca9', '#dd8470', '#c2ea4f', '#e05789', '#e3b96f', '#bb5ae8', '#475bc5', '#94ebc4', '#d264dc', '#3a33de', '#8972da', '#70e7e2', '#91e2d9', '#a4b3ef', '#cfee9d', '#e03e64', '#b29add', '#c691e6', '#93d77c', '#6a6fe4', '#e04c58', '#48b3d9', '#cd66c3', '#d151e9', '#e285b3', '#dc8eb8', '#9f62d1', '#5ace7c', '#dc67ea', '#dd2873', '#d8e4a1', '#79b4e9', '#abd059', '#59b1d6', '#f1a5e4', '#b537e8', '#a7e772', '#d9d16f', '#a9ebd9', '#cad581', '#c57a41', '#995cd5', '#d1d935', '#6bd762', '#3c4dd0', '#94eff0', '#e4e489', '#e063de', '#8887d9', '#aae6be', '#89d98a', '#69e8e0', '#de74e1', '#9ce192', '#87d798', '#a77ce2', '#cb79e5', '#3660e1', '#c6e48a', '#a6c2e4', '#e29771', '#9b8be8', '#72edac', '#b5ea90', '#77e563', '#50e6b5', '#e367c4', '#e6ce4c', '#59a2d8', '#ed8dd8', '#ad92ec', '#442cd4', '#9e46dd', '#e88c7e', '#c6944c', '#5bde92', '#ec5eb6', '#ddef99', '#cae5ab', '#81d5c4', '#436ec9', '#e19cde', '#e88b8b', '#7db1e6', '#e99f60', '#e26b6e', '#97e184', '#39dc64', '#48b0c5'])
+    const color = d3.scaleOrdinal().range(['#6daede', '#ee9aa1', '#b599e3', '#3cb8c4', '#d89d6a', '#98de5e', '#e3e47f', '#eaa9d1', '#b369d0', '#ab9ee6', '#eccf94', '#e181c8', '#c8e753', '#44c0d9', '#d7c546', '#e86b85', '#64e1dc', '#d6633b', '#54e540', '#a5e6c8', '#a6e132', '#76e98f', '#71e972', '#b9e8a2', '#ebdb9e', '#afade6', '#bdd13a', '#92c7de', '#d79c7e', '#dd9595', '#f0a1b8', '#eb8d7f', '#d469de', '#aaedbd', '#cb99f0', '#484dd6', '#ec7db9', '#b5eaa3', '#8fe497', '#667ae4', '#c961dd', '#50d0b0', '#886acd', '#60e799', '#bb90e5', '#e6abe3', '#cc487f', '#6696e8', '#9de7cb', '#6eabe9'])
 
     // Create svg for line chart
     const lineMargin = {top: 30, right: 30, bottom: 100, left: 40},
@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .attr('transform', `translate(${lineMargin.left},${lineMargin.top})`);
 
     var current_button = "categories"
+    var current_sel = "n_rev"
 
     // Create svg for pie chart
     const width = 350, height = 350, margin = 40;
@@ -53,10 +54,10 @@ document.addEventListener('DOMContentLoaded', function() {
             .duration(100)
             .style("opacity", 1)
         if(d.data != undefined){
-            tooltip.html(current_button + " " + d.data[0] + ": " + d.data[1])
+            tooltip.html(d.data[0] + ": " + d.data[1] + ' (' + current_sel + ')')
         }
         else{
-            tooltip.html(current_button + " " + d[0] + ": " + d[1])
+            tooltip.html(d[0] + ": " + d[1] + ' (' + current_sel + ')')
         }
         
         tooltip
@@ -77,12 +78,15 @@ document.addEventListener('DOMContentLoaded', function() {
             .style("opacity", 0)
     }
 
-    const clickOnCircle = function() {
+    const clickOnCircle = function(event, d) {
+        lineSvg.selectAll('circle')
+            .style("stroke", "None")
+
         d3.select(this)
             .style("stroke", "black")
             .style("stroke-width", "2px")
         
-        fetchPieData().then(data => updatePie(data))
+        fetchPieData({year: d.year, attr: current_button}).then(data => updatePie(data))
     }
 
     const fetchData = async (params = {}) => {
@@ -118,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Create the initial line chart
         x.domain(data.map(item => item.year));
-        y.domain([0, d3.max(data.map(item => item.avg))]);
+        y.domain([0, d3.max(data.map(item => item.n_reviews))]);
         
         lineSvg.append('g')
             .attr('class', 'axis axis--x')
@@ -138,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .datum(data)
                 .attr("d", d3.line()
                 .x(d => x(+d.year))
-                .y(d => y(+d.avg))
+                .y(d => y(+d.n_reviews))
                 )
                 .attr("stroke", "#69b3a2")
                 .style("stroke-width", 3)
@@ -147,62 +151,43 @@ document.addEventListener('DOMContentLoaded', function() {
             .data(data)
             .join('circle')
                 .attr("cx", d => x(+d.year))
-                .attr("cy", d => y(+d.avg))
-                .attr("r", 6)
+                .attr("cy", d => y(+d.n_reviews))
+                .attr("r", 8)
                 .style("fill", "#69b3a2")
             .on("click", clickOnCircle)
     }
     
     const updateLine = (data) => {
-        // set the color scale
-        color.domain(Object.keys(data))
 
-        // Update line Chart
-        d3.select('#line-trend')
-            .transition()
-            .duration(1000)
-            .attr('width', lineWidth + lineMargin.left + lineMargin.right)
-        x.range([0, lineWidth]).domain(Object.keys(data));
-        y.domain([0, d3.max(Object.values(data))]);
-
-        const bars = lineSvg.selectAll('.bar').data(entities);        
-        
-        bars.exit().remove();
-        
-        bars.join('rect')
-            .on("mouseover", showTooltip )
-            .on("mousemove", moveTooltip )
-            .on("mouseleave", hideTooltip )
-            .merge(bars)
-            .transition()
-            .duration(1000)
-            .attr('class', 'bar')
-            .attr('x', d => x(d[0]))
-            .attr('y', d => y(d[1]))
-            .attr('width', x.bandwidth())
-            .attr('height', d => lineHeight - y(d[1]))
-            .attr('fill', d => color(d[0]));
-
-        // Update axes
-        lineSvg.select('.axis--x')
-            .transition()
-            .duration(1000)
-            .call(d3.axisBottom(x))
-            .selectAll('text')
-            .attr('transform', 'rotate(45)')
-            .style('text-anchor', 'start');
-
-        lineSvg.select('.axis--y')
-            .transition()
-            .duration(1000)
-            .call(d3.axisLeft(y));
+        line
+          .datum(data)
+          .transition()
+          .duration(1000)
+          .attr("d", d3.line()
+            .x(function(d) { return x(+d.year) })
+            .y(function(d) { return y(+d.rating) })
+          )
+        dot
+        .data(data)
+        .transition()
+        .duration(1000)
+            .attr("cx", function(d) { return x(+d.year) })
+            .attr("cy", function(d) { return y(+d.rating) })
     
     }
 
     const updatePie = (data) => {
+        var data_to_use = data.ratings
         
-        const pie = d3.pie().value(d=>d.avg)
-        const data_ready = pie(Object.entries(data))
+        if (current_sel == 'n_rev') {
+            data_to_use = data.n_rev
+        }
+        
+        // set the color scale
+        color.domain(Object.keys(data_to_use))
+
+        const pie = d3.pie().value(d=>d[1])
+        const data_ready = pie(Object.entries(data_to_use))
         const arcs = svg.selectAll('path').data(data_ready);
 
         arcs.transition()

@@ -15,7 +15,7 @@ def generate_colors_by_hue(n):
     return colors
 
 # Generate 123 distinct colors
-distinct_colors = generate_colors_by_hue(123)
+distinct_colors = generate_colors_by_hue(50)
 print(distinct_colors)
 print(len(distinct_colors))
 
