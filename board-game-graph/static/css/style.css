@@ -10,8 +10,12 @@
 }
 
 .back-light {
-    background-color: rgb(244, 244, 244);
-    /* background-color: #FFE7D3; */
+    background-color: rgb(245, 245, 245);
+}
+
+#panel {
+    background-color: rgb(245, 245, 245);
+    padding-bottom: 5%;
 }
 
 #graph {

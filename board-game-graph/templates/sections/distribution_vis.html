@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %} Distributions {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+    <div>
+        <button id="year" class="distributionbtn ">Years</button>
+        <button id="minplayers" class="distributionbtn">Min Players</button>
+        <button id="maxplayers" class="distributionbtn">Max Players</button>
+        <button id="minplaytime" class="distributionbtn">Min Playtimes</button>
+        <button id="maxplaytime" class="distributionbtn">Max Playtimes</button>
+        <button id="minage" class="distributionbtn">Min Ages</button>
+        <button id="categories" class="distributionbtn">Categories</button>
+        <button id="mechanics" class="distributionbtn">Mechanics</button>
+        <button id="designer" class="distributionbtn">Designers</button>
+    </div>
+    
+    <div class="container d-flex">
+        <div id="pie"></div>
+        <div id="bar"></div>
+    </div>
+    
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="static/js/distribution_vis.js"></script>
+
+{% endblock content %}

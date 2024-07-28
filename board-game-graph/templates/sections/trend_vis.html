@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %} Trends {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+    <div>
+        <button id="categories" class="trendbtn">Categories</button>
+        <button id="mechanics" class="trendbtn">Mechanics</button>
+        <button id="designer" class="trendbtn">Designers</button>
+    </div>
+    
+    <div class="container d-flex">
+        <div id="line-trend"></div>
+        <div id="pie-trend"></div>
+    </div>
+    
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="static/js/trend_vis.js"></script>
+
+{% endblock content %}

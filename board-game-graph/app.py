@@ -5,8 +5,19 @@ from flask import Flask, render_template, jsonify, request, send_from_directory
 
 app = Flask(__name__)
 
+def group_games_by_attr(attr):
+    grouped_games = {}
+    for game in board_games:
+        val = game.get(attr)
+        if val not in grouped_games.keys():
+            grouped_games[val] = [game]
+        else:
+            grouped_games[val].append(game)
+    return dict(sorted(grouped_games.items()))
+
 with open('dataset/boardgames_100_clean.json', encoding='utf-8') as f:
     board_games = json.load(f)
+    time_board_game = group_games_by_attr('year')
 
 @app.route('/')
 def index():
@@ -126,38 +137,48 @@ def get_boardgames():
 
     return jsonify(filtered_boardgames)
 
-@app.route('/api/boardgames_cluster', methods=['GET'])
-def get_boardgames_cluster():
-    cluster_attr = list(request.args.keys())[0]
-    clustered_boardgames = {}
+@app.route('/api/boardgames_distribution', methods=['GET'])
+def get_boardgames_distribution():
+    distribution_attr = list(request.args.keys())[0]
+    distributed_boardgames = {}
     
-    if (cluster_attr == 'categories' or cluster_attr == 'mechanics'):
+    if (distribution_attr == 'categories' or distribution_attr == 'mechanics'):
         for entity in board_games:
-            attr = entity.get('types').get(cluster_attr)
+            attr = entity.get('types').get(distribution_attr)
             for a in attr:
                 name = a.get('name')
                 if name is not None:
-                    if name not in clustered_boardgames:
-                        clustered_boardgames[name] = 0
-                    clustered_boardgames[name] += 1
-    elif (cluster_attr == 'designer'):
+                    if name not in distributed_boardgames:
+                        distributed_boardgames[name] = 0
+                    distributed_boardgames[name] += 1
+    elif (distribution_attr == 'designer'):
         for entity in board_games:
-            attr = entity.get('credit').get(cluster_attr)
+            attr = entity.get('credit').get(distribution_attr)
             for a in attr:
                 name = a.get('name')
                 if name is not None:
-                    if name not in clustered_boardgames:
-                        clustered_boardgames[name] = 0
-                    clustered_boardgames[name] += 1
+                    if name not in distributed_boardgames:
+                        distributed_boardgames[name] = 0
+                    distributed_boardgames[name] += 1
     else:
         for entity in board_games:
-            attr = entity.get(cluster_attr)
+            attr = entity.get(distribution_attr)
             if attr is not None:
-                if attr not in clustered_boardgames:
-                    clustered_boardgames[attr] = 0
-                clustered_boardgames[attr] += 1
+                if attr not in distributed_boardgames:
+                    distributed_boardgames[attr] = 0
+                distributed_boardgames[attr] += 1
 
-    return jsonify(clustered_boardgames)
+    return jsonify(distributed_boardgames)
+
+@app.route('/api/boardgames_trend', methods=['GET'])
+def get_boardgames_trend():
+    # trend_attr = list(request.args.keys())[0]
+    trended_boardgames = []
+    
+    for key, value in time_board_game.items():
+        trended_boardgames.append({'year': key, 'avg': float(sum(v.get('rating').get('num_of_reviews') for v in value)) / len(value)})
+
+    return jsonify(trended_boardgames)
 
 if __name__ == '__main__':
     app.run(debug=True)
