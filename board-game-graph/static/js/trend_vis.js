@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const radius = Math.min(width, height) / 2 - margin
     const arc = d3.arc().innerRadius(radius/2).outerRadius(radius);
 
-    const svg = d3.select("#pie-trend")
+    const pieSvg = d3.select("#pie-trend")
     .append("svg")
         .attr("width", width)
         .attr("height", height)
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .style("stroke", "black")
             .style("stroke-width", "2px")
         
-        fetchPieData({year: d.year, attr: current_button}).then(data => updatePie(data))
+        fetchPieData({year: d.year, attr: current_button}).then(data => updatePie(data, d.year))
     }
 
     const fetchData = async (params = {}) => {
@@ -155,6 +155,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 .attr("r", 8)
                 .style("fill", "#69b3a2")
             .on("click", clickOnCircle)
+        
+        pieSvg.append("text")
+            .attr("id", "main_text_pie")
+            .attr("class", "center-text")
+            .attr("dominant-baseline", "middle")
+            .attr("x", 0)
+            .attr("y", -10)
+            .text("");
+        pieSvg.append("text")
+            .attr("id", "sec_text_pie")
+            .attr("class", "center-text")
+            .attr("x", 0)
+            .attr("y", 20)
+            .text("");
     }
     
     const updateLine = (data) => {
@@ -176,7 +190,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     }
 
-    const updatePie = (data) => {
+    const updatePie = (data, year) => {
         var data_to_use = data.ratings
         
         if (current_sel == 'n_rev') {
@@ -188,7 +202,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const pie = d3.pie().value(d=>d[1])
         const data_ready = pie(Object.entries(data_to_use))
-        const arcs = svg.selectAll('path').data(data_ready);
+        const arcs = pieSvg.selectAll('path').data(data_ready);
 
         arcs.transition()
             .duration(1000)
@@ -214,6 +228,12 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             
         arcs.exit().remove();
+
+        d3.select("#main_text_pie")
+            .text(year)
+            
+        d3.select("#sec_text_pie")
+            .text("tot: " + Object.keys(data_to_use).length);
     }
 
     fetchData().then(data => createCharts(data));

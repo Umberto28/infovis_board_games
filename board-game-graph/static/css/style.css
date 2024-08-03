@@ -117,3 +117,9 @@
 .legend-row div {
     margin-right: 10px;
 }
+
+.center-text {
+    font-size: 24px;
+    fill: #333;
+    text-anchor: middle;
+}

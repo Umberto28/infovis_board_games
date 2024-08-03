@@ -19,7 +19,6 @@ def group_games_by_attr(attr):
 with open('dataset/boardgames_100_clean.json', encoding='utf-8') as f:
     board_games = json.load(f)
     time_board_game = group_games_by_attr('year')
-    print(time_board_game.keys())
 
 @app.route('/')
 def index():
@@ -208,8 +207,6 @@ def get_boardgames_pietrend():
                 row['counter'] += 1
 
     pie_boardgames = pie_boardgames.apply(lambda row: row / row['counter'], axis=1)
-
-    print(pie_boardgames)
     return jsonify(pie_boardgames.to_dict())
 
 if __name__ == '__main__':
