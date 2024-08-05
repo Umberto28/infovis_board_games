@@ -1,12 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
-
 :root {
     --header-height: 3rem;
-    --nav-width: 16%;
+    --nav-width: 13%;
     --first-color: #0F7173;
     --first-color-light: #EEEEEE;
     --white-color: #ffffff;
-    --body-font: 'Nunito', sans-serif;
+    --body-font: "Comfortaa", sans-serif;
     --normal-font-size: 2rem;
     --z-fixed: 100;
 }
@@ -18,7 +16,7 @@
 body {
     position: relative;
     margin: var(--header-height) 0 0 0;
-    padding-left: 16% !important;
+    padding-left: var(--nav-width) !important;
     font-family: var(--body-font);
     font-size: var(--normal-font-size);
     transition: .5s;
@@ -71,10 +69,11 @@ a {
     flex-direction: column;
     justify-content: space-between;
     overflow: hidden;
+    font-family: var(--body-font);
 }
 
 .nav-link-icon {
-    font-size: 2.1rem;
+    font-size: 1.8rem;
     color: var(--first-color-light);
 }
 
@@ -97,7 +96,7 @@ a {
 .active {
     
     .nav-link-icon{
-        font-size: 2.5rem;
+        font-size: 2rem;
     }
     
     .nav-link-name{
@@ -112,7 +111,7 @@ a {
     position: absolute;
     left: 0;
     width: 4px;
-    height: 65px;
+    height: 60px;
     background-color: var(--white-color);
 }
 

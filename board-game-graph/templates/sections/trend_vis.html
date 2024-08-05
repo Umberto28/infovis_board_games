@@ -6,15 +6,36 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
-    <div>
-        <button id="categories" class="trendbtn">Categories</button>
-        <button id="mechanics" class="trendbtn">Mechanics</button>
-        <button id="designer" class="trendbtn">Designers</button>
-    </div>
+    <h1 class="text-col px-5 py-4">Trend Visualization</h1>
     
     <div class="container d-flex">
-        <div id="line-trend"></div>
-        <div id="pie-trend"></div>
+        
+        <div class="mx-5 d-flex justify-content-start">
+            <div class="chart-card card d-flex flex-column justify-content-between p-4 me-5">
+                <div class="d-flex flex-row justify-content-between mb-3">
+                    <span>Sort by</span>
+                    <div>
+                        <button>Rating</button>
+                        <button>Popularity</button>
+                    </div>
+                </div>
+                <div id="line-trend"></div>
+            </div>
+        </div>
+        <div class="mx-5 d-flex justify-content-start">
+            <div class="chart-card card d-flex flex-column justify-content-between p-4 me-5">
+                <div class="d-flex flex-row justify-content-between mb-3">
+                    <span>Attribute</span>
+                    <div>
+                        <button id="categories" class="trendbtn">Categories</button>
+                        <button id="mechanics" class="trendbtn">Mechanics</button>
+                        <button id="designer" class="trendbtn">Designers</button>
+                    </div>
+                </div>
+                <div id="pie-trend"></div>
+            </div>
+        </div>
+        
     </div>
     
 
