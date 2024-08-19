@@ -8,37 +8,34 @@
 {% block content %}
     <h1 class="text-col px-5 py-4">Trend Visualization</h1>
     
-    <div class="container d-flex">
-        
+    <div class="d-flex justify-content-around">
         <div class="mx-5 d-flex justify-content-start">
-            <div class="chart-card card d-flex flex-column justify-content-between p-4 me-5">
-                <div class="d-flex flex-row justify-content-between mb-3">
-                    <span>Sort by</span>
+            <div class="chart-card card d-flex flex-column justify-content-between me-5">
+                <div class="top-card p-4 d-flex flex-row justify-content-between mb-3">
+                    <span class="text-w">Sort by</span>
                     <div>
-                        <button>Rating</button>
-                        <button>Popularity</button>
+                        <button id="rating" class="sortbtn">Rating</button>
+                        <button id="popularity" class="sortbtn">Popularity</button>
                     </div>
                 </div>
-                <div id="line-trend"></div>
+                <div id="line-trend" class="px-4 pt-0 pb-4"></div>
             </div>
         </div>
         <div class="mx-5 d-flex justify-content-start">
-            <div class="chart-card card d-flex flex-column justify-content-between p-4 me-5">
-                <div class="d-flex flex-row justify-content-between mb-3">
-                    <span>Attribute</span>
+            <div class="chart-card card d-flex flex-column justify-content-between me-5">
+                <div class="top-card p-4 d-flex flex-row justify-content-between mb-3">
+                    <span class="text-w">Attribute</span>
                     <div>
                         <button id="categories" class="trendbtn">Categories</button>
                         <button id="mechanics" class="trendbtn">Mechanics</button>
                         <button id="designer" class="trendbtn">Designers</button>
                     </div>
                 </div>
-                <div id="pie-trend"></div>
+                <div id="pie-trend" class="px-4 pt-0 pb-4"></div>
             </div>
         </div>
-        
     </div>
     
-
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="static/js/trend_vis.js"></script>
 

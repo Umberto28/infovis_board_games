@@ -1,13 +1,23 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM fully loaded and parsed');
 
+    const bodyHeight = document.body.clientHeight,
+    bodyWidth = document.body.clientWidth,
+    percHeight = 0.522,
+    percLineWidth = 0.354,
+    percPieWidth = 0.25
+
+    const absHeight = percHeight * bodyHeight,
+    absLineWidth = percLineWidth * bodyWidth,
+    absPieWidth = percPieWidth * bodyWidth
+
     // Color palette for charts
     const color = d3.scaleOrdinal().range(['#6daede', '#ee9aa1', '#b599e3', '#3cb8c4', '#d89d6a', '#98de5e', '#e3e47f', '#eaa9d1', '#b369d0', '#ab9ee6', '#eccf94', '#e181c8', '#c8e753', '#44c0d9', '#d7c546', '#e86b85', '#64e1dc', '#d6633b', '#54e540', '#a5e6c8', '#a6e132', '#76e98f', '#71e972', '#b9e8a2', '#ebdb9e', '#afade6', '#bdd13a', '#92c7de', '#d79c7e', '#dd9595', '#f0a1b8', '#eb8d7f', '#d469de', '#aaedbd', '#cb99f0', '#484dd6', '#ec7db9', '#b5eaa3', '#8fe497', '#667ae4', '#c961dd', '#50d0b0', '#886acd', '#60e799', '#bb90e5', '#e6abe3', '#cc487f', '#6696e8', '#9de7cb', '#6eabe9'])
 
     // Create svg for line chart
-    const lineMargin = {top: 30, right: 30, bottom: 100, left: 40},
-    lineHeight = 600 - lineMargin.top - lineMargin.bottom;
-    var lineWidth = 750 - lineMargin.left - lineMargin.right;
+    const lineMargin = {top: 30, right: 30, bottom: 30, left: 40},
+    lineHeight = absHeight - lineMargin.top - lineMargin.bottom,
+    lineWidth = absLineWidth - lineMargin.left - lineMargin.right;
 
     const x = d3.scalePoint().range([0, lineWidth]);
     const y = d3.scaleLinear().range([lineHeight, 0]);
@@ -15,28 +25,28 @@ document.addEventListener('DOMContentLoaded', function() {
     const lineSvg = d3.select('#line-trend')
     .append('svg')
         .attr('id', 'line_svg')
-        .attr('width', lineWidth + lineMargin.left + lineMargin.right)
-        .attr('height', lineHeight + lineMargin.top + lineMargin.bottom)
+        .attr('width', absLineWidth)
+        .attr('height', absHeight)
     .append('g')
         .attr('transform', `translate(${lineMargin.left},${lineMargin.top})`);
 
     var current_button = "categories"
-    var current_sel = "n_rev"
+    var current_sel = "n_reviews"
 
     // Create svg for pie chart
-    const width = 350, height = 350, margin = 40;
-    const radius = Math.min(width, height) / 2 - margin
+    const  margin = 60;
+    const radius = Math.min(absPieWidth, absHeight) / 2 - margin
     const arc = d3.arc().innerRadius(radius/2).outerRadius(radius);
 
     const pieSvg = d3.select("#pie-trend")
     .append("svg")
-        .attr("width", width)
-        .attr("height", height)
+        .attr("width", absPieWidth)
+        .attr("height", absHeight)
     .append("g")
-        .attr("transform", `translate(${width / 2},${height / 2})`);
+        .attr("transform", `translate(${absPieWidth / 2},${absHeight / 2})`);
 
     // Add a tooltip div.
-    const tooltip = d3.select("#pie-trend")
+    const tooltip = d3.select("body")
     .append("div")
     .style("opacity", 0)
     .attr("class", "tooltip")
@@ -59,6 +69,9 @@ document.addEventListener('DOMContentLoaded', function() {
         else{
             tooltip.html(d[0] + ": " + d[1] + ' (' + current_sel + ')')
         }
+
+        console.log(event.pageX)
+        console.log(event.pageY)
         
         tooltip
             .style("left", (event.pageX) + "px")
@@ -193,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const updatePie = (data, year) => {
         var data_to_use = data.ratings
         
-        if (current_sel == 'n_rev') {
+        if (current_sel == 'n_reviews') {
             data_to_use = data.n_rev
         }
         
@@ -215,9 +228,9 @@ document.addEventListener('DOMContentLoaded', function() {
         arcs.enter()
             .append('path')
             .attr('fill', d => color(d.data[0]))
-            .on("mouseover", showTooltip )
-            .on("mousemove", moveTooltip )
-            .on("mouseleave", hideTooltip )
+            .on("mouseover", showTooltip)
+            .on("mousemove", moveTooltip)
+            .on("mouseleave", hideTooltip)
             .each(function(d) { this._current = d; })
             .transition()
             .duration(1000)
