@@ -143,3 +143,15 @@
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     transform: translateY(-2px);
 }
+
+.btn-outline-primary{
+    border-color: #0F7173 !important;
+    color: #0F7173 !important;
+    font-weight: bolder !important;
+}
+
+.btn-check:checked+.btn-outline-primary, .btn-outline-primary:hover {
+    background-color: #0F7173 !important;
+    color: white !important;
+}
+

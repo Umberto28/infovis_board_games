@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM fully loaded and parsed');
 
+    // Dimension inizialization
     const bodyHeight = document.body.clientHeight,
     bodyWidth = document.body.clientWidth,
     percHeight = 0.522,
@@ -91,17 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .style("opacity", 0)
     }
 
-    const clickOnCircle = function(event, d) {
-        lineSvg.selectAll('circle')
-            .style("stroke", "None")
-
-        d3.select(this)
-            .style("stroke", "black")
-            .style("stroke-width", "2px")
-        
-        fetchPieData({year: d.year, attr: current_button}).then(data => updatePie(data, d.year))
-    }
-
+    // Fetch data functions
     const fetchData = async (params = {}) => {
         let url = '/api/boardgames_trend';
         let queryParams = new URLSearchParams(params).toString();
@@ -121,6 +112,57 @@ document.addEventListener('DOMContentLoaded', function() {
         const response = await fetch(url);
         return await response.json();
     };
+
+    // Line chart trend update
+    const toggleSwitch = document.getElementById('toggleSwitch');
+
+    toggleSwitch.addEventListener('change', function() {
+        if (toggleSwitch.checked) {
+            console.log('Rating selected');
+            current_sel = 'rating'
+            fetchData().then(data => updateLine(data, current_sel));
+        } else {
+            console.log('Popularity selected');
+            current_sel = 'n_reviews'
+            fetchData().then(data => updateLine(data, current_sel));
+        }
+    });
+
+    // Pie chart attr update
+    const radioButtons = document.querySelectorAll('input[name="btnradio"]');
+    
+    function handleSectionChange(event) {
+        current_button = event.target.id;
+
+        // Check if there's the pie
+        if (!pieSvg.select('path').empty()) {
+            lineSvg.selectAll('circle')
+                .filter(function() {
+                    return d3.select(this).style('stroke') === 'black';
+                })
+                .each(function(d) {
+                    fetchPieData({year: d.year, attr: current_button}).then(data => updatePie(data, d.year))
+                });
+        }
+    }
+
+    radioButtons.forEach(radio => {
+        radio.addEventListener('change', handleSectionChange);
+    });
+    
+    handleSectionChange({ target: document.querySelector('input[name="btnradio"]:checked') });
+
+    // Handle click on line chart's circles
+    const clickOnCircle = function(event, d) {
+        lineSvg.selectAll('circle')
+            .style("stroke", "None")
+
+        d3.select(this)
+            .style("stroke", "black")
+            .style("stroke-width", "2px")
+        
+        fetchPieData({year: d.year, attr: current_button}).then(data => updatePie(data, d.year))
+    }
     
     // document.querySelectorAll('.trendbtn').forEach(button => {
     //     button.addEventListener('click', () => {
@@ -154,12 +196,14 @@ document.addEventListener('DOMContentLoaded', function() {
             .append("path")
                 .datum(data)
                 .attr("d", d3.line()
-                .x(d => x(+d.year))
-                .y(d => y(+d.n_reviews))
+                    .x(d => x(+d.year))
+                    .y(d => y(+d.n_reviews))
                 )
                 .attr("stroke", "#69b3a2")
+                .attr("id", "linePath")
                 .style("stroke-width", 3)
                 .style("fill", "none")
+        
         lineSvg.selectAll('circle')
             .data(data)
             .join('circle')
@@ -169,46 +213,64 @@ document.addEventListener('DOMContentLoaded', function() {
                 .style("fill", "#69b3a2")
             .on("click", clickOnCircle)
         
+        // Adding text to pie chart
         pieSvg.append("text")
             .attr("id", "main_text_pie")
             .attr("class", "center-text")
             .attr("dominant-baseline", "middle")
             .attr("x", 0)
             .attr("y", -10)
+            .style("font-family", "Comfortaa, sans-serif")
+            .style("color", "#0F7173")
             .text("");
+        
         pieSvg.append("text")
             .attr("id", "sec_text_pie")
             .attr("class", "center-text")
             .attr("x", 0)
             .attr("y", 20)
+            .style("font-family", "Comfortaa")
+            .style("color", "#0F7173")
             .text("");
     }
     
     const updateLine = (data) => {
-
-        line
-          .datum(data)
-          .transition()
-          .duration(1000)
-          .attr("d", d3.line()
-            .x(function(d) { return x(+d.year) })
-            .y(function(d) { return y(+d.rating) })
-          )
-        dot
-        .data(data)
-        .transition()
-        .duration(1000)
-            .attr("cx", function(d) { return x(+d.year) })
-            .attr("cy", function(d) { return y(+d.rating) })
     
+        y.domain([0, d3.max(data.map(item => current_sel == 'rating' ? item.rating : item.n_reviews))]);
+
+        lineSvg.select(".axis--y")
+            .transition()
+            .duration(1000)
+            .call(d3.axisLeft(y));
+
+        lineSvg.select('#linePath')
+            .datum(data)
+            .transition()
+            .duration(1000)
+            .attr("d", d3.line()
+                .x(d => x(+d.year))
+                .y(d => y(current_sel == 'rating' ? +d.rating : +d.n_reviews))
+            )
+            .attr("stroke", "#69b3a2")
+            .style("stroke-width", 3)
+            .style("fill", "none");
+    
+        lineSvg.selectAll('circle')
+            .data(data)
+            .transition()
+            .duration(1000)
+            .attr("cy", d => y(current_sel == 'rating' ? d.rating : d.n_reviews));
+        
+        lineSvg.selectAll('circle')
+        .style("stroke", "None")
+
+        // Clear pie
+        pieSvg.selectAll('path').remove()
+        pieSvg.selectAll('text').text('')
     }
 
     const updatePie = (data, year) => {
-        var data_to_use = data.ratings
-        
-        if (current_sel == 'n_reviews') {
-            data_to_use = data.n_rev
-        }
+        var data_to_use = current_sel == 'rating' ? data.rating : data.n_rev
         
         // set the color scale
         color.domain(Object.keys(data_to_use))
