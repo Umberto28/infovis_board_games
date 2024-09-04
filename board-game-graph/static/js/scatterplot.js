@@ -242,27 +242,46 @@ d3.json('/data').then(function(data) {
     });
 
     // default values
-    updateAxes("rating", "year", "descending");
+    updateAxes("popularity", "year", "descending");
 
-    // updates
-    d3.select("#x-axis-select").on("change", function() {
-        const xParameter = this.value;
+    // Updates
+    const toggleSwitch1 = document.getElementById('toggleSwitch1');
+    toggleSwitch1.addEventListener('change', function() {
+        var xParameter = '';
+        
+        if (toggleSwitch1.checked) {
+            xParameter = 'rating';
+        } else {
+            xParameter = 'popularity';
+        }
+
         const yParameter = d3.select("#y-axis-select").node().value;
-        const xOrder = d3.select("#x-order-select").node().value;
+        const xOrder = toggleSwitch2.checked ? 'ascending': 'descending';
         updateAxes(xParameter, yParameter, xOrder);
     });
+    
+    const toggleSwitch2 = document.getElementById('toggleSwitch2');
+    toggleSwitch2.addEventListener('change', function() {
+        var xOrder = '';
+        
+        if (toggleSwitch2.checked) {
+            xOrder = 'ascending';
+        } else {
+            xOrder = 'descending';
+        }
+
+        const yParameter = d3.select("#y-axis-select").node().value;
+        const xParameter = toggleSwitch1.checked ? 'rating': 'popularity';
+        updateAxes(xParameter, yParameter, xOrder);
+    });
+
     d3.select("#y-axis-select").on("change", function() {
-        const xParameter = d3.select("#x-axis-select").node().value;
+        const xParameter = toggleSwitch1.checked ? 'rating': 'popularity';
         const yParameter = this.value;
-        const xOrder = d3.select("#x-order-select").node().value;
+        const xOrder = toggleSwitch2.checked ? 'ascending': 'descending';
         updateAxes(xParameter, yParameter, xOrder);
     });
-    d3.select("#x-order-select").on("change", function() {
-        const xParameter = d3.select("#x-axis-select").node().value;
-        const yParameter = d3.select("#y-axis-select").node().value;
-        const xOrder = this.value;
-        updateAxes(xParameter, yParameter, xOrder);
-    });
+
 }).catch(function(error) {
     console.error('Error fetching data:', error);
 });

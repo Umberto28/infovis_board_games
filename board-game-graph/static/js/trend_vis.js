@@ -118,14 +118,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     toggleSwitch.addEventListener('change', function() {
         if (toggleSwitch.checked) {
-            console.log('Rating selected');
             current_sel = 'rating'
-            fetchData().then(data => updateLine(data, current_sel));
         } else {
-            console.log('Popularity selected');
             current_sel = 'n_reviews'
-            fetchData().then(data => updateLine(data, current_sel));
         }
+        
+        fetchData().then(data => updateLine(data, current_sel));
     });
 
     // Pie chart attr update

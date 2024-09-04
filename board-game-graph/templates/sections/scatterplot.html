@@ -22,8 +22,8 @@
                 <span class="text-w">Select X-axis ordering:</span>
                 <div class="input_wrapper">
                     <input type="checkbox" class="switch_4" id="toggleSwitch2">
-                    <text class="is_checked text-w">Descending</text>
-                    <text class="is_unchecked text-w">Ascending</text>
+                    <text class="is_checked text-w">Ascending</text>
+                    <text class="is_unchecked text-w">Descending</text>
                 </div>
             </div>
             <div class="d-flex flex-column">
@@ -40,46 +40,13 @@
             </div>
             
         </div>
-        <div class="d-flex">
+        <div class="d-flex my-4">
             <div id="distribution"></div>
             <div id="scatterplot"></div>
             <div id="tooltip" class="hidden"></div>
             <div id="card" class="hidden"></div>
         </div>
-    </div>
-
-    <div>
-        <label for="x-axis-select">Select X-axis parameter:</label>
-        <select id="x-axis-select">
-            <option value="rating">Ranking by rating</option>
-            <option value="popularity">Ranking by popularity</option>
-        </select>
-        <label for="x-order-select">Select X-axis ordering:</label>
-        <select id="x-order-select">
-            <option value="descending">Descending</option>
-            <option value="ascending">Ascending</option>
-        </select>
-    </div>
-    <div>
-        <label for="y-axis-select">Select Y-axis parameter:</label>
-        <select id="y-axis-select">
-            <option value="year">Year</option>
-            <option value="minplayers">Min Players</option>
-            <option value="maxplayers">Max Players</option>
-            <option value="minplaytime">Min Playtime</option>
-            <option value="maxplaytime">Max Playtime</option>
-            <option value="avgplaytime">Average Playtime</option>
-            <option value="minage">Min Age</option>
-        </select>
-    </div>
-    
-    <div class="container d-flex">
-        <div id="distribution"></div>
-        <div id="scatterplot"></div>
-        <div id="tooltip" class="hidden"></div>
-        <div id="card" class="hidden"></div>
-    </div>
-    
+    </div>   
     
     <script src="https://cdn.jsdelivr.net/npm/regression-js@1.0.1/dist/regression.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>

@@ -160,3 +160,8 @@
     color: white !important;
     font-family: "Comfortaa", sans-serif;
 }
+
+#clear-filters {
+    background-color: #cf3126 !important;
+    border: 1px solid #0F7173;
+}

@@ -30,21 +30,25 @@
 {% endblock stylesheets %}
 
 {% block content %}
-    <div class="container d-flex flex-column">
-        <div class="d-flex justify-content-between">
-            <label for="min-year">Select Min Year:</label>
-            <input type="range" id="min-year" step="1">
-            <span id="min-year-value">1876</span>
-        </div>
-        <div class="d-flex justify-content-between">
-            <label for="max-year">Select Max Year:</label>
-            <input type="range" id="max-year" step="1">
-            <span id="max-year-value">2024</span>
-        </div>
-        <div id="bubblechart"></div>
-        <div id="tooltip" class="tooltip"></div>
-        <div id="card" class="card"></div>
+  <h1 class="text-col px-5 py-4 mt-1 mb-3">Bubble Chart</h1>
+
+  <div class="mx-5 chart-card card me-5 d-flex flex-column align-items-center">
+    <div class="w-100 top-card p-4 mb-3 d-flex justify-content-evenly align-items-center">
+      <div class="d-flex flex-column align-items-center">
+        <label class="text-w" for="min-year">Select Min Year:</label>
+        <input type="range" id="min-year" step="1">
+        <span class="text-w" id="min-year-value">1876</span>
     </div>
+    <div class="d-flex flex-column align-items-center">
+        <label class="text-w" for="max-year">Select Max Year:</label>
+        <input type="range" id="max-year" step="1">
+        <span class="text-w" id="max-year-value">2024</span>
+    </div>
+    </div>
+    <div id="bubblechart"></div>
+    <div id="tooltip" class="tooltip"></div>
+    <div id="card" class="card"></div>
+  </div>
     
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="static/js/bubblechart.js"></script>

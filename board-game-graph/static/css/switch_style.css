@@ -132,3 +132,7 @@
     -webkit-transform: scale(0);
     transform: scale(0);
 }
+
+input[type="range"] {
+    background-color: #0F7173;
+}
