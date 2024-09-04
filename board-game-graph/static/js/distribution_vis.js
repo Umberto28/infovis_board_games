@@ -5,11 +5,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const color = d3.scaleOrdinal().range(['#85edc3', '#e6a766', '#5288e4', '#e09793', '#af91df', '#dab974', '#53d55a', '#97f1a3', '#a7e290', '#e4d14f', '#e99561', '#3be8a7', '#9ae6b8', '#e6255c', '#d38664', '#7fdeed', '#b0dd9a', '#7097d3', '#4ac8d4', '#e9bcac', '#df9daa', '#e48e9c', '#948ce2', '#a5eedc', '#de938a', '#e04da1', '#dcca85', '#edd7a0', '#d2789f', '#c4ef9b', '#6fbae1', '#eae655', '#2edc3d', '#51c2e1', '#d14ca9', '#dd8470', '#c2ea4f', '#e05789', '#e3b96f', '#bb5ae8', '#475bc5', '#94ebc4', '#d264dc', '#3a33de', '#8972da', '#70e7e2', '#91e2d9', '#a4b3ef', '#cfee9d', '#e03e64', '#b29add', '#c691e6', '#93d77c', '#6a6fe4', '#e04c58', '#48b3d9', '#cd66c3', '#d151e9', '#e285b3', '#dc8eb8', '#9f62d1', '#5ace7c', '#dc67ea', '#dd2873', '#d8e4a1', '#79b4e9', '#abd059', '#59b1d6', '#f1a5e4', '#b537e8', '#a7e772', '#d9d16f', '#a9ebd9', '#cad581', '#c57a41', '#995cd5', '#d1d935', '#6bd762', '#3c4dd0', '#94eff0', '#e4e489', '#e063de', '#8887d9', '#aae6be', '#89d98a', '#69e8e0', '#de74e1', '#9ce192', '#87d798', '#a77ce2', '#cb79e5', '#3660e1', '#c6e48a', '#a6c2e4', '#e29771', '#9b8be8', '#72edac', '#b5ea90', '#77e563', '#50e6b5', '#e367c4', '#e6ce4c', '#59a2d8', '#ed8dd8', '#ad92ec', '#442cd4', '#9e46dd', '#e88c7e', '#c6944c', '#5bde92', '#ec5eb6', '#ddef99', '#cae5ab', '#81d5c4', '#436ec9', '#e19cde', '#e88b8b', '#7db1e6', '#e99f60', '#e26b6e', '#97e184', '#39dc64', '#48b0c5'])
 
     // Create svg for pie chart
-    const width = 350, height = 350, margin = 40;
+    const width = 450, height = 450, margin = 40;
     const radius = Math.min(width, height) / 2 - margin
-    const arc = d3.arc().innerRadius(radius/2).outerRadius(radius);
+    const arc = d3.arc().innerRadius(0).outerRadius(radius);
 
-    const svg = d3.select("#pie")
+    const svg = d3.select("#pieDis")
     .append("svg")
         .attr("width", width)
         .attr("height", height)
@@ -18,8 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Create svg for bar chart
     const barMargin = {top: 30, right: 30, bottom: 100, left: 40},
-    barHeight = 400 - barMargin.top - barMargin.bottom;
-    var barWidth = 520 - barMargin.left - barMargin.right;
+    barHeight = 500 - barMargin.top - barMargin.bottom;
+    var barWidth = 620 - barMargin.left - barMargin.right;
 
     const x = d3.scaleBand().range([0, barWidth]).padding(0.2);
     const y = d3.scaleLinear().range([barHeight, 0]);
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var current_button = "year"
 
     // Add a tooltip div.
-    const tooltip = d3.select("#bar")
+    const tooltip = d3.select("body")
     .append("div")
     .style("opacity", 0)
     .attr("class", "tooltip")
@@ -53,10 +53,10 @@ document.addEventListener('DOMContentLoaded', function() {
             .duration(100)
             .style("opacity", 1)
         if(d.data != undefined){
-            tooltip.html(current_button + " " + d.data[0] + ": " + d.data[1])
+            tooltip.html(current_button + " " + d.data[0] + ": " + d.data[1] + " games")
         }
         else{
-            tooltip.html(current_button + " " + d[0] + ": " + d[1])
+            tooltip.html(current_button + " " + d[0] + ": " + d[1] + " games")
         }
         
         tooltip
@@ -87,10 +87,10 @@ document.addEventListener('DOMContentLoaded', function() {
         return await response.json();
     };
     
-    document.querySelectorAll('.distributionbtn').forEach(button => {
-        button.addEventListener('click', () => {
-            current_button = button.id
-            fetchData(button.id).then(data => updateCharts(data));
+    document.querySelectorAll('input[name="btnradio"]').forEach(radio => {
+        radio.addEventListener('change', (event) => {
+            current_button = event.target.id;
+            fetchData(current_button).then(data => updateCharts(data));
         });
     });
 

@@ -6,23 +6,45 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
-    <div>
-        <button id="year" class="distributionbtn ">Years</button>
-        <button id="minplayers" class="distributionbtn">Min Players</button>
-        <button id="maxplayers" class="distributionbtn">Max Players</button>
-        <button id="minplaytime" class="distributionbtn">Min Playtimes</button>
-        <button id="maxplaytime" class="distributionbtn">Max Playtimes</button>
-        <button id="minage" class="distributionbtn">Min Ages</button>
-        <button id="categories" class="distributionbtn">Categories</button>
-        <button id="mechanics" class="distributionbtn">Mechanics</button>
-        <button id="designer" class="distributionbtn">Designers</button>
-    </div>
+    <h1 class="text-col px-5 py-4 mt-1 mb-3">Distributions (tot: 100 Games)</h1>
     
-    <div class="container d-flex">
-        <div id="pie"></div>
-        <div id="bar"></div>
+    <div class="mx-5 chart-card card me-5 d-flex flex-column">
+        <div class="w-100 top-card p-4 mb-3 d-flex justify-content-between align-items-center">
+            <span class="text-w">Select Attribute</span>
+            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                <input type="radio" class="btn-check" name="btnradio" id="year" autocomplete="off" checked>
+                <label class="btn btn-outline-primary text-w" for="year">Year</label>
+                
+                <input type="radio" class="btn-check" name="btnradio" id="minplayers" autocomplete="off">
+                <label class="btn btn-outline-primary text-w" for="minplayers">Min Players</label>
+
+                <input type="radio" class="btn-check" name="btnradio" id="maxplayers" autocomplete="off">
+                <label class="btn btn-outline-primary text-w" for="maxplayers">Max Players</label>
+
+                <input type="radio" class="btn-check" name="btnradio" id="minplaytime" autocomplete="off">
+                <label class="btn btn-outline-primary text-w" for="minplaytime">Min Playtime</label>
+
+                <input type="radio" class="btn-check" name="btnradio" id="maxplaytime" autocomplete="off">
+                <label class="btn btn-outline-primary text-w" for="maxplaytime">Max Playtime</label>
+
+                <input type="radio" class="btn-check" name="btnradio" id="minage" autocomplete="off">
+                <label class="btn btn-outline-primary text-w" for="minage">Min Age</label>
+                
+                <input type="radio" class="btn-check" name="btnradio" id="categories" autocomplete="off">
+                <label class="btn btn-outline-primary text-w" for="categories">Categories</label>
+              
+                <input type="radio" class="btn-check" name="btnradio" id="mechanics" autocomplete="off">
+                <label class="btn btn-outline-primary text-w" for="mechanics">Mechanics</label>
+              
+                <input type="radio" class="btn-check" name="btnradio" id="designer" autocomplete="off">
+                <label class="btn btn-outline-primary text-w" for="designer">Designers</label>
+            </div>
+        </div>
+        <div class="p-2 mb-3 d-flex justify-content-center align-items-center">
+            <div id="pieDis"></div>
+            <div id="bar"></div>
+        </div>
     </div>
-    
 
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="static/js/distribution_vis.js"></script>

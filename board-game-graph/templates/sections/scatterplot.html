@@ -6,7 +6,48 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
-    <script src="https://cdn.jsdelivr.net/npm/regression-js@1.0.1/dist/regression.js"></script>
+    <h1 class="text-col px-5 py-4 mt-1 mb-3">Scatterplot</h1>
+
+    <div class="mx-5 chart-card card me-5 d-flex flex-column align-items-center">
+        <div class="w-100 top-card p-4 mb-3 d-flex justify-content-around">
+            <div>
+                <span class="text-w">Select X-axis parameter:</span>
+                <div class="input_wrapper">
+                    <input type="checkbox" class="switch_4" id="toggleSwitch1">
+                    <text class="is_checked text-w">Rating</text>
+                    <text class="is_unchecked text-w">Popularity</text>
+                </div>
+            </div>
+            <div>
+                <span class="text-w">Select X-axis ordering:</span>
+                <div class="input_wrapper">
+                    <input type="checkbox" class="switch_4" id="toggleSwitch2">
+                    <text class="is_checked text-w">Descending</text>
+                    <text class="is_unchecked text-w">Ascending</text>
+                </div>
+            </div>
+            <div class="d-flex flex-column">
+                <label class="text-w" for="y-axis-select">Select Y-axis parameter:</label>
+                <select id="y-axis-select">
+                    <option value="year">Year</option>
+                    <option value="minplayers">Min Players</option>
+                    <option value="maxplayers">Max Players</option>
+                    <option value="minplaytime">Min Playtime</option>
+                    <option value="maxplaytime">Max Playtime</option>
+                    <option value="avgplaytime">Average Playtime</option>
+                    <option value="minage">Min Age</option>
+                </select>
+            </div>
+            
+        </div>
+        <div class="d-flex">
+            <div id="distribution"></div>
+            <div id="scatterplot"></div>
+            <div id="tooltip" class="hidden"></div>
+            <div id="card" class="hidden"></div>
+        </div>
+    </div>
+
     <div>
         <label for="x-axis-select">Select X-axis parameter:</label>
         <select id="x-axis-select">
@@ -39,6 +80,8 @@
         <div id="card" class="hidden"></div>
     </div>
     
+    
+    <script src="https://cdn.jsdelivr.net/npm/regression-js@1.0.1/dist/regression.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="static/js/scatterplot.js"></script>
 

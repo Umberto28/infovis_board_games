@@ -33,6 +33,7 @@
 #graph {
     width: 1200px;
     height: 600px;
+    border-right: 1px solid #f48244;
 }
 
 #tooltip {
@@ -121,16 +122,15 @@
 }
 
 /* adds space between legend and container */
-/*
+
 #legend-container {
-    margin-right: auto;
+    width: 20%;
 }
-*/
 .legend-row-color {
     border: 2px solid white;
 }
 .legend-row-text {
-    font-size: 12px;
+    font-size: 14px;
     fill: #333;
 }
 .legend-row.legend-active .legend-row-color { /* to highlight active legend item */
@@ -141,7 +141,7 @@
     align-items: center;
     margin-bottom: 5px;
     cursor: pointer;
-    width: fit-content;
+    
 }
 .legend-row div {
     margin-right: 10px;
@@ -156,3 +156,20 @@
 /* #info-alert {
 
 } */
+ 
+#pieDis {
+    border-right: 1px solid #f48244;
+    padding-left: 8%;
+    padding-right: 8%;
+    position: relative;
+    white-space: nowrap;
+}
+
+#bar {
+    padding-left: 7%;
+    padding-right: 6%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    position: relative;
+}

@@ -6,95 +6,96 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
-    <h1 class="text-col px-5 py-4">Network Visualization</h1>
-    <div class="filter-card card mb-5 mx-5 p-4">
-        <div class="d-flex justify-content-around mb-3">
-            <div class="dropdown">
-                <button class="btn btn-light shadow dropbtn mx-1">Select Years</button>
-                <div id="year-dropdown" class="dropdown-content">
-                    <!-- Year options will be populated here -->
-                </div>
-            </div>
-            <div class="dropdown">
-                <button class="btn btn-light shadow dropbtn mx-1">Select Min Players</button>
-                <div id="minplayers-dropdown" class="dropdown-content">
-                    <!-- Min Players options will be populated here -->
-                </div>
-            </div>
-            <div class="dropdown">
-                <button class="btn btn-light shadow dropbtn mx-1">Select Max Players</button>
-                <div id="maxplayers-dropdown" class="dropdown-content">
-                    <!-- Max Players options will be populated here -->
-                </div>
-            </div>
-            <div class="dropdown">
-                <button class="btn btn-light shadow dropbtn mx-1">Select Min Playtimes</button>
-                <div id="minplaytime-dropdown" class="dropdown-content">
-                    <!-- Min Playtime options will be populated here -->
-                </div>
-            </div>
-            <div class="dropdown">
-                <button class="btn btn-light shadow dropbtn mx-1">Select Max Playtimes</button>
-                <div id="maxplaytime-dropdown" class="dropdown-content">
-                    <!-- Max Playtime options will be populated here -->
-                </div>
-            </div>
-            <div class="dropdown">
-                <button class="btn btn-light shadow dropbtn mx-1">Select Min Ages</button>
-                <div id="minage-dropdown" class="dropdown-content">
-                    <!-- Min Age options will be populated here -->
-                </div>
-            </div>
-            <div class="dropdown">
-                <button class="btn btn-light shadow dropbtn mx-1">Select Categories</button>
-                <div id="categories-dropdown" class="dropdown-content">
-                    <label class="switch-label">
-                        <input type="checkbox" value="AND" class="switch-input">
-                        <span class="slider round"></span><span class="switch-text">AND</span>
-                    </label>
-                    <!-- Category options will be populated here -->
-                </div>
-            </div>
-            <div class="dropdown">
-                <button class="btn btn-light shadow dropbtn mx-1">Select Mechanics</button>
-                <div id="mechanics-dropdown" class="dropdown-content">
-                    <label class="switch-label">
-                        <input type="checkbox" value="AND" class="switch-input">
-                        <span class="slider round"></span><span class="switch-text">AND</span>
-                    </label>
-                    <!-- Mechanic options will be populated here -->
-                </div>
-            </div>
-            <div class="dropdown">
-                <button class="btn btn-light shadow dropbtn mx-1">Select Designers</button>
-                <div id="designer-dropdown" class="dropdown-content">
-                    <label class="switch-label">
-                        <input type="checkbox" value="AND" class="switch-input">
-                        <span class="slider round"></span><span class="switch-text">AND</span>
-                    </label>
-                    <!-- Designer options will be populated here -->
-                </div>
-            </div>
-        </div>
-        <div class="row row-cols-auto d-flex justify-content-center">
-            <button id="clear-filters" class="col btn btn-light shadow me-3">Clear All Filters</button>
-            <select name="property" id="property" class="col shadow">
-                <option selected value="year">Year</option>
-                <option value="minplayers">Min Players</option>
-                <option value="maxplayers">Max Players</option>
-                <option value="minplaytime">Min Playtime</option>
-                <option value="maxplaytime">Max Playtime</option>
-                <option value="minage">Min Age</option>
-            </select>
-        </div>
-    </div>
+    <h1 class="text-col px-5 py-4 mt-1 mb-3">Network Analysis</h1>
     
-    <div class="mx-5 d-flex justify-content-start">
-        <div class="chart-card card p-2 me-5">
-            <div id="graph"></div>
-        </div>        
-        <div id="legend-container" class="chart-card card px-5 d-flex justify-content-center"></div>
+    <div class="mx-5 chart-card card me-5 d-flex flex-column">
+        <div class="w-100 top-card p-4 mb-3">
+            <div class="d-flex justify-content-around mb-3">
+                <div class="dropdown">
+                    <button class="btn dropbtn mx-1">Select Years</button>
+                    <div id="year-dropdown" class="dropdown-content">
+                        <!-- Year options will be populated here -->
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="btn dropbtn mx-1">Select Min Players</button>
+                    <div id="minplayers-dropdown" class="dropdown-content">
+                        <!-- Min Players options will be populated here -->
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="btn dropbtn mx-1">Select Max Players</button>
+                    <div id="maxplayers-dropdown" class="dropdown-content">
+                        <!-- Max Players options will be populated here -->
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="btn dropbtn mx-1">Select Min Playtimes</button>
+                    <div id="minplaytime-dropdown" class="dropdown-content">
+                        <!-- Min Playtime options will be populated here -->
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="btn dropbtn mx-1">Select Max Playtimes</button>
+                    <div id="maxplaytime-dropdown" class="dropdown-content">
+                        <!-- Max Playtime options will be populated here -->
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="btn dropbtn mx-1">Select Min Ages</button>
+                    <div id="minage-dropdown" class="dropdown-content">
+                        <!-- Min Age options will be populated here -->
+                    </div>
+                </div>
+            </div>
+            <div class="row row-cols-auto d-flex justify-content-around">
+                <div class="dropdown">
+                    <button class="btn dropbtn mx-1">Select Categories</button>
+                    <div id="categories-dropdown" class="dropdown-content">
+                        <label class="switch-label">
+                            <input type="checkbox" value="AND" class="switch-input">
+                            <span class="slider round"></span><span class="switch-text">AND</span>
+                        </label>
+                        <!-- Category options will be populated here -->
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="btn dropbtn mx-1">Select Mechanics</button>
+                    <div id="mechanics-dropdown" class="dropdown-content">
+                        <label class="switch-label">
+                            <input type="checkbox" value="AND" class="switch-input">
+                            <span class="slider round"></span><span class="switch-text">AND</span>
+                        </label>
+                        <!-- Mechanic options will be populated here -->
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="btn dropbtn mx-1">Select Designers</button>
+                    <div id="designer-dropdown" class="dropdown-content">
+                        <label class="switch-label">
+                            <input type="checkbox" value="AND" class="switch-input">
+                            <span class="slider round"></span><span class="switch-text">AND</span>
+                        </label>
+                        <!-- Designer options will be populated here -->
+                    </div>
+                </div>
+                <button id="clear-filters" class="col btn dropbtn me-3">Clear All Filters</button>
+                <select name="property" id="property" class="col">
+                    <option selected value="year">Year</option>
+                    <option value="minplayers">Min Players</option>
+                    <option value="maxplayers">Max Players</option>
+                    <option value="minplaytime">Min Playtime</option>
+                    <option value="maxplaytime">Max Playtime</option>
+                    <option value="minage">Min Age</option>
+                </select>
+            </div>
+        </div>
+        <div class="p-2 d-flex justify-content-between align-items-center">
+            <div id="graph" class="my-3"></div>
+            <div id="legend-container" class="d-flex justify-content-center"></div>
+        </div>
     </div>
+
     <div id="tooltip" class="hidden"></div>
     <div id="card" class="hidden"></div>
     

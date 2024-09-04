@@ -155,3 +155,8 @@
     color: white !important;
 }
 
+.dropbtn {
+    background-color: #0F7173 !important;
+    color: white !important;
+    font-family: "Comfortaa", sans-serif;
+}
