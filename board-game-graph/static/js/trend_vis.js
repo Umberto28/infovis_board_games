@@ -51,10 +51,6 @@ document.addEventListener('DOMContentLoaded', function() {
     .append("div")
     .style("opacity", 0)
     .attr("class", "tooltip")
-    .style("background-color", "black")
-    .style("color", "white")
-    .style("border-radius", "5px")
-    .style("padding", "10px")
 
     const showTooltip = function(event, d) {
         d3.select(this)
@@ -63,16 +59,13 @@ document.addEventListener('DOMContentLoaded', function() {
         tooltip
             .transition()
             .duration(100)
-            .style("opacity", 1)
+            .style("opacity", 0.9)
         if(d.data != undefined){
-            tooltip.html(d.data[0] + ": " + d.data[1] + ' (' + current_sel + ')')
+            tooltip.html("<span>" + current_button.charAt(0).toUpperCase() + current_button.slice(1) + ": " + d.data[0] + "<br>" + current_sel.charAt(0).toUpperCase() + current_sel.slice(1) + ": " + d.data[1] + "</span>")
         }
         else{
-            tooltip.html(d[0] + ": " + d[1] + ' (' + current_sel + ')')
+            tooltip.html("<span>" + current_button.charAt(0).toUpperCase() + current_button.slice(1) + ": " + d[0] + "<br>" + current_sel.charAt(0).toUpperCase() + current_sel.slice(1) + ": " + d[1] + "</span>")
         }
-
-        console.log(event.pageX)
-        console.log(event.pageY)
         
         tooltip
             .style("left", (event.pageX) + "px")
@@ -80,8 +73,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     const moveTooltip = function(event) {
         tooltip
-            .style("left", (event.pageX) + "px")
-            .style("top", (event.pageY) - 50 + "px")
+            .style("left", (event.pageX) + 25 + "px")
+            .style("top", (event.pageY) + 25 + "px")
     }
     const hideTooltip = function() {
         d3.select(this)

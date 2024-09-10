@@ -1,8 +1,8 @@
 d3.json("/data").then(data => {
     // Set the dimensions and margins of the graph
     const margin = {top: 30, right: 200, bottom: 100, left: 100},
-          width = 1200 - margin.left - margin.right,  // Increased width
-          height = 800 - margin.top - margin.bottom;  // Increased height
+          width = 1000 - margin.left - margin.right,  // Increased width
+          height = 650 - margin.top - margin.bottom;  // Increased height
 
     // Append the svg object to the body of the page
     const svg = d3.select("#bubblechart")
@@ -12,8 +12,43 @@ d3.json("/data").then(data => {
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    const tooltip = d3.select("#tooltip")
-        .style("opacity", 0);
+    const tooltip = d3.select("body")
+        .append('div')
+        .style("opacity", 0)
+        .attr("class", "tooltip")
+
+    const showTooltip = function(event, d) {
+        d3.select(this)
+            .style("stroke-width", "2px")
+        tooltip
+            .transition()
+            .duration(100)
+            .style("opacity", 0.9)
+        if(d.data != undefined){
+            tooltip.html(`<span>Year: ${d.data.year}</span><br><span>Average Ranking: ${float2int(d.data.avgRanking.toFixed(2))}</span><br><span>Number of Board Games in this group: ${d.data.numGames}</span><br><span>Average Number of players: ${d.data.avgPlayers}</span>`)
+        }
+        else{
+            tooltip.html(`<span>Year: ${d.year}</span><br><span>Average Ranking: ${float2int(d.avgRanking.toFixed(2))}</span><br><span>Number of Board Games in this group: ${d.numGames}</span><br><span>Average Number of players: ${d.avgPlayers}</span>`)
+        }
+        
+        tooltip
+            .style("left", (event.pageX) + "px")
+            .style("top", (event.pageY) + "px")
+    }
+    const moveTooltip = function(event) {
+        tooltip
+            .style("left", (event.pageX) + 25 + "px")
+            .style("top", (event.pageY) + 25 + "px")
+    }
+    const hideTooltip = function() {
+        d3.select(this)
+        .style("stroke-width", "1px")
+        tooltip
+            .transition()
+            .duration(100)
+            .style("opacity", 0)
+    }
+    
     const card = d3.select("#card")
         .style("display", "none");
 
@@ -57,6 +92,10 @@ d3.json("/data").then(data => {
     maxYearSlider.value = uniqueYears.length - 1;
     maxYearValue.textContent = uniqueYears[uniqueYears.length - 1];
 
+    // Add a color scale for ranking
+    const color = d3.scaleSequential(d3.interpolateRdYlBu)
+    .domain([5, 100]);  // Rank 1 will be red, Rank 100 will be blue
+
     function createBubbleChart(filteredData) {
         svg.selectAll("*").remove();
 
@@ -95,10 +134,6 @@ d3.json("/data").then(data => {
             .domain(d3.extent(filteredData, d => d.numGames))
             .range([4, 60]); // Adjusted to make size differences more pronounced
 
-        // Add a color scale for ranking
-        const color = d3.scaleSequential(d3.interpolateRdYlBu)
-            .domain([5, 100]);  // Rank 1 will be red, Rank 100 will be blue
-
         // Add bubbles with transitions
         const bubbles = svg.append("g")
             .selectAll("circle")
@@ -112,19 +147,9 @@ d3.json("/data").then(data => {
             .style("fill", d => color(d.avgRanking))
             .style("opacity", "0.7")
             .attr("stroke", "black")
-            .on("mouseover", function(event, d) {
-                tooltip.transition()
-                    .duration(200)
-                    .style("opacity", .9);
-                tooltip.html(`Year: ${d.year}<br>Average Ranking: ${float2int(d.avgRanking.toFixed(2))}<br>Number of Board Games in this group: ${d.numGames}<br>Average Number of players: ${d.avgPlayers}`)
-                    .style("left", (event.pageX + 5) + "px")
-                    .style("top", (event.pageY - 28) + "px");
-            })
-            .on("mouseout", function() {
-                tooltip.transition()
-                    .duration(500)
-                    .style("opacity", 0);
-            })
+            .on("mouseover", showTooltip)
+            .on("mousemove", moveTooltip)
+            .on("mouseleave", hideTooltip)
             .on("click", function(event, d) {
                 card.style("display", "block")
                     .style("left", (event.pageX + 5) + "px")
@@ -157,42 +182,69 @@ d3.json("/data").then(data => {
             if (!event.target.closest("circle")) {
                 card.style("display", "none");
             }
-        });
-            
-        // Add legend for color
-        const legendColor = svg.append("g")
-            .attr("transform", `translate(${-margin.left + 5},${height / 2 + 200})`);
-    
-        legendColor.append("text")
-            .attr("x", 0)
-            .attr("y", -20)
-            .text("Ranking")
-            .style("font-size", "14px")
-            .attr("alignment-baseline", "middle");
-    
-        const colorValues = [5, 50, 100];
-    
-        legendColor.selectAll("rect")
-            .data(colorValues)
-            .enter()
-            .append("rect")
-            .attr("x", 0)
-            .attr("y", (d, i) => i * 20)
-            .attr("width", 20)
-             .attr("height", 20)
-            .style("fill", d => color(d));
-    
-        legendColor.selectAll("text.color")
-            .data(colorValues)
-            .enter()
-            .append("text")
-            .attr("x", 30)
-            .attr("y", (d, i) => 10 + i * 20)
-            .text(d => d)
-            .style("font-size", "12px")
-            .attr("alignment-baseline", "middle");
-    
+        });    
     }
+    
+    const colorValues = [5, 50, 100];
+
+    // Create an SVG container for the legend
+    const legendSvg = d3.select('#legend')
+    .append('svg')
+    .attr('width', 150)
+    .attr('height', 300);
+
+    // Create defs and linear gradient
+    const defs = legendSvg.append('defs');
+
+    // Define gradient with three stops
+    const linearGradient = defs.append('linearGradient')
+        .attr('id', 'legend-gradient')
+        .attr('x1', '0%')
+        .attr('x2', '0%')
+        .attr('y1', '0%')
+        .attr('y2', '100%');
+
+    linearGradient.append('stop')
+        .attr('offset', '0%')
+        .attr('stop-color', color(colorValues[0]));
+
+    linearGradient.append('stop')
+        .attr('offset', '50%')
+        .attr('stop-color', color(colorValues[1]));
+
+    linearGradient.append('stop')
+        .attr('offset', '100%')
+        .attr('stop-color', color(colorValues[2]));
+
+    // Draw the rectangle with gradient
+    legendSvg.append('rect')
+        .attr('x', 20)
+        .attr('y', 20)
+        .attr('width', 30)
+        .attr('height', 260)
+        .style('fill', 'url(#legend-gradient)');
+
+    // Add labels for min, mid, and max values
+    legendSvg.append('text')
+        .attr('x', 60)  // Position the text right of the gradient
+        .attr('y', 35)  // Min value label (at top)
+        .attr('class', 'legend-row-text')
+        .style('text-anchor', 'start')
+        .text(colorValues[0]);
+
+    legendSvg.append('text')
+        .attr('x', 60)  // Mid value label (center)
+        .attr('y', 155)
+        .attr('class', 'legend-row-text')
+        .style('text-anchor', 'start')
+        .text(colorValues[1]);
+
+    legendSvg.append('text')
+        .attr('x', 60)  // Max value label (at bottom)
+        .attr('y', 275)
+        .attr('class', 'legend-row-text')
+        .style('text-anchor', 'start')
+        .text(colorValues[2]);
 
     // Initial display
     createBubbleChart(processedData);

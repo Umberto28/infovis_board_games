@@ -9,11 +9,11 @@
     <h1 class="text-col px-5 py-4 mt-1 mb-3">Network Analysis</h1>
     
     <div class="mx-5 chart-card card me-5 d-flex flex-column">
-        <div class="w-100 top-card p-4 mb-3 d-flex justify-content-start">
-            <div class="d-flex align-items-center me-5">
-                <span class="text-w ms-4 me-5">Filters:</span>
+        <div class="w-100 top-card px-4 py-3 mb-3 d-flex justify-content-start">
+            <div class="d-flex align-items-center me-4">
+                <span class="text-w mx-4">Filters:</span>
                 <div class="d-flex flex-column align-items-start justify-content-center">
-                    <div class="d-flex justify-content-start mb-3">
+                    <div class="d-flex justify-content-start align-items-center my-2">
                         <div class="dropdown">
                             <button class="btn dropbtn mx-2">Select Years</button>
                             <div id="year-dropdown" class="dropdown-content">
@@ -45,7 +45,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-start mb-3">
+                    <div class="d-flex justify-content-start align-items-center my-2">
                         <div class="dropdown">
                             <button class="btn dropbtn mx-2">Select Min Ages</button>
                             <div id="minage-dropdown" class="dropdown-content">
@@ -87,8 +87,8 @@
                 </div>
             </div>
 
-            <div class="d-flex align-items-center ms-5">
-                <span class="text-w me-5">Clustering:</span>
+            <div class="d-flex align-items-center">
+                <span class="text-w mx-4">Clustering:</span>
                 <select name="property" id="property" class="mx-2">
                     <option selected value="year">Year</option>
                     <option value="minplayers">Min Players</option>
@@ -105,7 +105,6 @@
         </div>
     </div>
 
-    <div id="tooltip" class="hidden"></div>
     <div id="card" class="hidden"></div>
     
     <script src="static/js/lens.js"></script>

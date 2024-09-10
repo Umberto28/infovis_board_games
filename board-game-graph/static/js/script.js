@@ -12,7 +12,38 @@ document.addEventListener('DOMContentLoaded', function() {
         .attr('height', height);
     console.log('SVG created');
 
-    const tooltip = d3.select('#tooltip');
+    const tooltip = d3.select('body')
+        .append("div")
+        .attr("class", "tooltip");
+
+    const showTooltip = function(event, d) {
+        d3.select(this)
+            .style("stroke", "black")
+            .style("stroke-width", "2px")
+        
+        tooltip
+            .transition()
+            .duration(100)
+            .style("opacity", 0.9)
+        tooltip.html("<span>" + d.name + "</span>")
+
+        tooltip.style("left", (event.pageX) + "px")
+        .style("top", (event.pageY) + "px")
+    }
+    const moveTooltip = function(event) {
+        tooltip
+            .style("left", (event.pageX) + 25 + "px")
+            .style("top", (event.pageY) + 25 + "px")
+    }
+    const hideTooltip = function() {
+        d3.select(this)
+            .style("stroke", "none")
+        tooltip
+            .transition()
+            .duration(100)
+            .style("opacity", 0)
+    }
+
     const card = d3.select('#card');
 
     var property = 'year'; // default property, maybe add 'no property'?
@@ -81,34 +112,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 .attr('stroke-width', '1.5px')
             .call(drag(simulation));
 
-        node.on('mouseover', (event, d) => {
-            tooltip.classed('hidden', false)
-                .html(d.name)
-                .style('left', (event.pageX + 5) + 'px')
-                .style('top', (event.pageY + 5) + 'px');
-        }).on('mouseout', () => {
-            tooltip.classed('hidden', true);
-        }).on('click', (event, d) => {
-            event.stopPropagation();
-            const game = data.find(game => game.id === d.id);
-            card.classed('hidden', false)
-                .html(`
-                <h2>${game.title}</h2>
-                <p><strong>Rank:</strong> ${game.rank}</p>
-                <p><strong>Rating:</strong> ${game.rating.rating}</p>
-                <p><strong>Reviews:</strong> ${game.rating.num_of_reviews}</p>
-                <p><strong>Year:</strong> ${game.year}</p>
-                <p><strong>Players:</strong> ${game.minplayers} - ${game.maxplayers}</p>
-                <p><strong>Play Time:</strong> ${game.minplaytime} - ${game.maxplaytime} mins</p>
-                <p><strong>Age:</strong> ${game.minage}+</p>
-                <p><strong>Categories:</strong> ${game.types.categories.map(c => c.name).join(' | ')}</p>
-                <p><strong>Mechanics:</strong> ${game.types.mechanics.map(m => m.name).join(' | ')}</p>
-                <p><strong>Designer:</strong> ${game.credit.designer.map(d => d.name).join(' | ')}</p>
-                `)
-                .style('left', (event.pageX + 10) + 'px')
-                .style('top', (event.pageY + 10) + 'px');
-            console.log('Card shown:', game);
-        });
+        node.on("mouseover", showTooltip)
+            .on("mousemove", moveTooltip)
+            .on("mouseleave", hideTooltip)
+            .on('click', (event, d) => {
+                event.stopPropagation();
+                const game = data.find(game => game.id === d.id);
+                card.classed('hidden', false)
+                    .html(`
+                    <h2>${game.title}</h2>
+                    <p><strong>Rank:</strong> ${game.rank}</p>
+                    <p><strong>Rating:</strong> ${game.rating.rating}</p>
+                    <p><strong>Reviews:</strong> ${game.rating.num_of_reviews}</p>
+                    <p><strong>Year:</strong> ${game.year}</p>
+                    <p><strong>Players:</strong> ${game.minplayers} - ${game.maxplayers}</p>
+                    <p><strong>Play Time:</strong> ${game.minplaytime} - ${game.maxplaytime} mins</p>
+                    <p><strong>Age:</strong> ${game.minage}+</p>
+                    <p><strong>Categories:</strong> ${game.types.categories.map(c => c.name).join(' | ')}</p>
+                    <p><strong>Mechanics:</strong> ${game.types.mechanics.map(m => m.name).join(' | ')}</p>
+                    <p><strong>Designer:</strong> ${game.credit.designer.map(d => d.name).join(' | ')}</p>
+                    `)
+                    .style('left', (event.pageX + 10) + 'px')
+                    .style('top', (event.pageY + 10) + 'px');
+                console.log('Card shown:', game);
+            });
 
         simulation.on('tick', () => {
             nodes.forEach(d => {

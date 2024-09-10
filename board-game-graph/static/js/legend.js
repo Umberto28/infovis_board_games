@@ -47,8 +47,8 @@ const addLegend = (svg, nodes, colorScale, property) => {
             .attr('class', 'legend-row-color')
             // .attr('width', 10)
             // .attr('height', 10)
-            .style('width', '10px')
-            .style('height', '10px')
+            .style('width', '15px')
+            .style('height', '15px')
             // .attr('fill', colorScale(value));
             .style('background-color', colorScale(value));
 
