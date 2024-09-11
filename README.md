@@ -2,7 +2,7 @@
 
 ## Descrizione
 
-Questo progetto rappresenta il progetto finale del corso di Visualizzazione delle Informazioni. Consiste in un'applicazione web che permette una visualizzazione interattiva di un dataset contenente i 100 giochi da tavolo più importanti reperibili su [BoardGameGeek](https://boardgamegeek.com). Il dataset esplora vari aspetti come valutazioni, durata media delle partite, numero minimo e massimo di giocatori, e altro ancora. L'applicazione offre una panoramica visiva per facilitare l'analisi di questi dati.
+Questo è il progetto finale del corso di Visualizzazione delle Informazioni. Consiste in un'applicazione web che permette una visualizzazione interattiva di un dataset contenente i 100 giochi da tavolo più importanti reperibili su [BoardGameGeek](https://boardgamegeek.com). Il dataset esplora vari aspetti come valutazioni, durata media delle partite, numero minimo e massimo di giocatori, e altro ancora. L'applicazione offre una panoramica visiva per facilitare l'analisi di questi dati.
 
 ## Installazione ed esecuzione
 
