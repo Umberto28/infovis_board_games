@@ -11,12 +11,12 @@ Questo è il progetto finale del corso di Visualizzazione delle Informazioni. Co
     git clone https://github.com/Umberto28/infovis_board_games.git
     ```
 
-2. Naviga della directory del progetto:
+2. Naviga nella directory del progetto:
     ```bash
     cd infovis_board_games
     ```
 
-3. Installa le dipendenze se non le hai (Flask e pandas):
+3. Installa le dipendenze necessarie (Flask e pandas):
     ```bash
     pip install -r requirements.txt
     ```
@@ -50,7 +50,7 @@ Questa pagina visualizza una rappresentazione grafica del dataset, dove:
   - Età minima consigliata
 - **Interazioni:**
   - Passando il cursore sopra un nodo (hover), si visualizza il nome del gioco.
-  - Cliccando su un nodo, si accede a tutti i dettagli relativi al gioco da tavolo selezionato tramite un pop-up. Si può cliccare su qualsiasi zona fuori il pop-up per chiuderlo.
+  - Cliccando su un nodo, si accede a tutti i dettagli relativi al gioco da tavolo selezionato tramite un pop-up. Si può cliccare su una zona qualsiasi fuori il pop-up per chiuderlo.
   - A destra del grafo, una legenda mostra i valori usati per la clusterizzazione. Cliccando sui valori nella legenda, vengono evidenziati i nodi corrispondenti a quel cluster.
 
 ### 2. **Distributions**
