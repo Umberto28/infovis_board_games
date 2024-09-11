@@ -219,11 +219,10 @@ d3.json('/data').then(function(data) {
             .on("mousemove", moveTooltip)
             .on("mouseleave", hideTooltip)
             .on('click', (event, d) => {
-                event.stopPropagation();
+                card.style("display", "block");
                 const game = data.find(game => game.id === d.id);
-                card.classed('hidden', false)
-                    .html(`
-                    <h2>${game.title}</h2>
+                d3.select('#card-top').html(`<h2>${game.title}</h2>`)
+                d3.select('#card-info').html(`
                     <p><strong>Rating Rank:</strong> ${game.rank}</p>
                     <p><strong>Popularity Rank:</strong> ${d.popularity_rank}</p>
                     <p><strong>Rating:</strong> ${game.rating.rating}</p>
@@ -235,10 +234,7 @@ d3.json('/data').then(function(data) {
                     <p><strong>Categories:</strong> ${game.types.categories.map(c => c.name).join(' | ')}</p>
                     <p><strong>Mechanics:</strong> ${game.types.mechanics.map(m => m.name).join(' | ')}</p>
                     <p><strong>Designer:</strong> ${game.credit.designer.map(d => d.name).join(' | ')}</p>
-                    `)
-                    .style('left', (event.pageX + 10) + 'px')
-                    .style('top', (event.pageY + 10) + 'px');
-                console.log('Card shown:', game);
+                    `);
             })
             .merge(circles)
             .transition()
@@ -283,14 +279,15 @@ d3.json('/data').then(function(data) {
         barYAxis.transition().call(d3.axisRight(barY).tickSize(0).tickFormat(''));
     }
 
-    document.addEventListener('click', () => {
-        card.classed('hidden', true);
-        console.log('Card hidden');
+    d3.select("#popup-card").on("click", function(event) {
+        event.stopPropagation();
     });
     
-    // Prevent card from hiding when clicking on the card itself
-    card.on('click', (event) => {
-        event.stopPropagation();
+    // Close the card when clicking outside the card
+    d3.select("body").on("click", function(event) {
+        if (!event.target.closest("circle")) {
+            card.style("display", "none");
+        }
     });
 
     // default values

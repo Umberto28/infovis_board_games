@@ -22,7 +22,7 @@ with open('dataset/boardgames_100_clean.json', encoding='utf-8') as f:
 
 @app.route('/')
 def index():
-    return render_template('sections/list_vis.html')
+    return render_template('sections/network_vis.html')
 
 @app.route('/favicon.ico')
 def favicon():
@@ -61,7 +61,7 @@ def get_segment(request):
         segment = request.path.split('/')[-1]
 
         if segment == '':
-            segment = 'list_vis'
+            segment = 'network_vis'
 
         return segment
 

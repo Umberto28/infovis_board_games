@@ -49,8 +49,7 @@ d3.json("/data").then(data => {
             .style("opacity", 0)
     }
     
-    const card = d3.select("#card")
-        .style("display", "none");
+    const card = d3.select("#card");
 
     // Compute the average players and prepare the data
     const processedData = d3.rollups(data, v => {
@@ -151,15 +150,10 @@ d3.json("/data").then(data => {
             .on("mousemove", moveTooltip)
             .on("mouseleave", hideTooltip)
             .on("click", function(event, d) {
-                card.style("display", "block")
-                    .style("left", (event.pageX + 5) + "px")
-                    .style("top", (event.pageY + 5) + "px")
-                    .html(`
-                        <h4>Games from ${d.year} with ${d.avgPlayers} average number of players</h4>
-                        <ul>
-                            ${d.games.map(game => `<li>${game.name} (Rank: ${game.rank}), (Players: ${game.minplayers}-${game.maxplayers})</li>`).join('')}
-                        </ul>
-                    `);
+                card.style("display", "block");
+                    
+                d3.select('#card-top').html(`<h4>Games from ${d.year} with ${d.avgPlayers} average number of players</h4>`);
+                d3.select('#card-info').html(`<ul>${d.games.map(game => `<li>${game.name} (Rank: ${game.rank}), (Players: ${game.minplayers}-${game.maxplayers})</li>`).join('')}</ul>`);
             })
             .transition()
             .duration(1000)
@@ -176,15 +170,20 @@ d3.json("/data").then(data => {
             .duration(1000)
             .attr("r", 0)
             .remove();
-
-        // Hide the card when clicking outside
+        
+        // Hide the card when clicking outside or on the x button
+        d3.select("#popup-card").on("click", function(event) {
+            event.stopPropagation();
+        });
+        
+        // Close the card when clicking outside the card
         d3.select("body").on("click", function(event) {
             if (!event.target.closest("circle")) {
                 card.style("display", "none");
             }
-        });    
+        });
     }
-    
+
     const colorValues = [5, 50, 100];
 
     // Create an SVG container for the legend
