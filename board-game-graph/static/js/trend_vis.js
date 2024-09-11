@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var current_button = "categories"
     var current_sel = "n_reviews"
+    const alert = d3.select("#alert-warning");
 
     // Create svg for pie chart
     const  margin = 60;
@@ -145,6 +146,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Handle click on line chart's circles
     const clickOnCircle = function(event, d) {
+        if(pieSvg.select('path').empty()){
+            alert.style("display", "none");
+        }
+
         lineSvg.selectAll('circle')
             .style("stroke", "None")
 
@@ -258,6 +263,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Clear pie
         pieSvg.selectAll('path').remove()
         pieSvg.selectAll('text').text('')
+
+        alert.style("display", "block");
     }
 
     const updatePie = (data, year) => {

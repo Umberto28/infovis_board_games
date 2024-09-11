@@ -107,8 +107,8 @@
     max-width: 300px;
 } */
 
-#card.hidden {
-    display: none;
+.hidden {
+    display: none !important;
 }
 
 .chart-card {
