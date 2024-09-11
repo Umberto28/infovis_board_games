@@ -105,5 +105,5 @@ Questa pagina visualizza una **bubble chart** con:
 - I bubble sono **colorati** in base al **ranking medio** dei giochi al loro interno.
 
 **Interazioni:**
-- Passando il cursore sopra un bubble (**hover**), vengono visualizzate informazioni aggiuntive.
+- Passando il cursore sopra un bubble (hover), vengono visualizzate informazioni aggiuntive.
 - Cliccando su un bubble, si possono visualizzare i dettagli dei giochi contenuti al suo interno.
